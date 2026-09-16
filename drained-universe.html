@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>soulspace — DRAINED</title>
+    <link rel="stylesheet" href="./fonts/fonts.css" />
+    <style>
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+
+        body {
+            margin: 0;
+            padding: 24px 28px 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: stretch;
+            height: 100vh;
+            background: #f5f4fb;
+            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            letter-spacing: -0.03em;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            z-index: 0;
+            width: min(42vmin, 24.5rem);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            filter: blur(10px);
+            background: radial-gradient(
+                circle at 50% 50%,
+                #9896f1 0%,
+                rgba(152, 150, 241, 0.8) 38%,
+                rgba(196, 194, 246, 0.3) 64%,
+                transparent 78%
+            );
+        }
+
+        body.is-on::before {
+            animation: orbGrow 2.8s ease-out forwards;
+        }
+
+        @keyframes orbGrow {
+            0% {
+                width: min(42vmin, 24.5rem);
+                filter: blur(10px);
+            }
+            100% {
+                width: min(168vmin, 88rem);
+                filter: blur(64px);
+            }
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.12;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='cardGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23cardGrain)'/%3E%3C/svg%3E");
+            background-size: 160px 160px;
+        }
+
+        .canvas-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            background: transparent;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls-bar {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 22px 4px 0;
+            background: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.6rem;
+        }
+
+        .btn {
+            background: none;
+            border: none;
+            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-size: clamp(0.82rem, 1.35vw, 1.05rem);
+            font-weight: 800;
+            font-style: normal;
+            color: #1c2228;
+            cursor: pointer;
+            padding: 0;
+            letter-spacing: -0.03em;
+        }
+        .btn:hover {
+            color: #1f1e33;
+        }
+        .btn.active {
+            text-decoration: underline;
+            text-underline-offset: 0.28em;
+            color: #1f1e33;
+        }
+
+        .tempo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-size: clamp(0.82rem, 1.35vw, 1.05rem);
+            font-weight: 800;
+            font-style: normal;
+            color: #1c2228;
+            letter-spacing: -0.03em;
+        }
+
+        #tempoValue {
+            min-width: 2.2em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tempo-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 132px;
+            height: 1px;
+            background: #3d3c58;
+            outline: none;
+        }
+
+        .tempo-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 0;
+            background: #3d3c58;
+            cursor: pointer;
+        }
+
+        .play-layer {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            filter: blur(3.5px);
+            opacity: 0.72;
+            pointer-events: none;
+            transition: filter 0.9s ease, opacity 0.9s ease;
+        }
+
+        body.is-playing .play-layer {
+            filter: blur(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .guide-copy {
+            position: fixed;
+            left: 50%;
+            top: 16%;
+            z-index: 20;
+            width: min(36rem, 88vw);
+            margin: 0;
+            transform: translateX(-50%);
+            text-align: center;
+            pointer-events: none;
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .guide-copy.is-gone {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-14px);
+        }
+
+        .guide-copy p {
+            margin: 0;
+            color: #4e4bb8;
+            font-family: Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            font-size: clamp(0.92rem, 1.35vw, 1.12rem);
+            line-height: 1.85;
+            letter-spacing: -0.025em;
+            word-break: keep-all;
+        }
+
+        .guide-start {
+            margin-top: 1.35rem !important;
+            animation: spacePulse 1.55s ease-in-out infinite;
+        }
+
+        .guide-start b {
+            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-weight: 700;
+        }
+
+        @keyframes spacePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.45; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="play-layer">
+    <div class="canvas-container" id="container">
+        <canvas id="universeCanvas"></canvas>
+    </div>
+
+    <div class="controls-bar">
+        <div class="btn-group">
+            <button class="btn" id="playBtn">PLAY</button>
+            <button class="btn" id="stopBtn">STOP</button>
+            <button class="btn" id="clearBtn">CLEAR</button>
+        </div>
+        
+        <div class="tempo-container">
+            <span>TEMPO</span>
+            <input type="range" id="tempoSlider" class="tempo-slider" min="30" max="150" value="70">
+            <span id="tempoValue">70</span>
+        </div>
+    </div>
+    </div>
+    <div class="guide-copy" id="guideCopy">
+        <p>점을 이어 작은 소리와 빛을 깨워보세요.</p>
+        <p class="guide-start"><b>Space</b> 를 누르면 시작됩니다.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('universeCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('container');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const tempoSlider = document.getElementById('tempoSlider');
+        const tempoValue = document.getElementById('tempoValue');
+        const guideCopy = document.getElementById('guideCopy');
+        let started = false;
+
+        function beginUniverse() {
+            if (started) return;
+            started = true;
+            document.body.classList.add('is-playing');
+            guideCopy?.classList.add('is-gone');
+        }
+
+        function resize() {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        let isDrawing = false;
+        let isPlaying = false;
+        let scanX = 0;
+        let bpm = 70;
+        let scanSpeed = (bpm / 60) * 1.8;
+
+        let lines = [];
+        let currentLine = null;
+
+        const totalNotes = 12;
+        const baseFreqs = [293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 1174.66, 1318.51];
+
+        function staffLayout() {
+            const w = canvas.width;
+            const h = canvas.height;
+            const padX = Math.max(16, w * 0.02);
+            const padY = Math.max(14, h * 0.05);
+            const top = padY;
+            const laneH = (h - padY * 2) / totalNotes;
+            const colGap = Math.max(32, Math.min(48, w * 0.026));
+            const innerW = w - padX * 2;
+            const cols = Math.max(16, Math.round(innerW / colGap));
+            const startX = padX + (innerW - (cols - 1) * colGap) / 2;
+            const rect = canvas.getBoundingClientRect();
+            const vmin = Math.min(window.innerWidth, window.innerHeight);
+            const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+            const orbSize = Math.min(168 * vmin / 100, 88 * rem);
+            return {
+                w, h, top, laneH, colGap, cols, startX,
+                orbX: window.innerWidth / 2 - rect.left,
+                orbY: window.innerHeight / 2 - rect.top,
+                orbR: orbSize / 2
+            };
+        }
+
+        function noteY(row, layout = staffLayout()) {
+            return layout.top + (row + 0.5) * layout.laneH;
+        }
+
+        function snapToStaff(x, y) {
+            const layout = staffLayout();
+            let row = Math.floor((y - layout.top) / layout.laneH);
+            row = Math.max(0, Math.min(totalNotes - 1, row));
+            let col = Math.round((x - layout.startX) / layout.colGap);
+            col = Math.max(0, Math.min(layout.cols - 1, col));
+            return {
+                x: layout.startX + col * layout.colGap,
+                y: noteY(row, layout),
+                row
+            };
+        }
+
+        function gridFade(x, y, layout) {
+            return Math.max(0, Math.min(1,
+                (Math.hypot(x - layout.orbX, y - layout.orbY) - layout.orbR * 0.34) /
+                (layout.orbR * 0.5)
+            ));
+        }
+
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!started) return;
+            initAudio();
+            const rect = canvas.getBoundingClientRect();
+            const snapped = snapToStaff(e.clientX - rect.left, e.clientY - rect.top);
+            if (!snapped) return;
+            isDrawing = true;
+            currentLine = { points: [{ x: snapped.x, y: snapped.y, played: false }] };
+            lines.push(currentLine);
+            triggerMusic(snapped.y, 0.25, 0.1);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing || !currentLine) return;
+            const rect = canvas.getBoundingClientRect();
+            const snapped = snapToStaff(e.clientX - rect.left, e.clientY - rect.top);
+            if (!snapped) return;
+
+            const lastPoint = currentLine.points[currentLine.points.length - 1];
+            if (lastPoint.x === snapped.x && lastPoint.y === snapped.y) return;
+            const dist = Math.hypot(snapped.x - lastPoint.x, snapped.y - lastPoint.y);
+            if (dist < 20) return;
+
+            currentLine.points.push({ x: snapped.x, y: snapped.y, played: false });
+            triggerMusic(snapped.y, 0.2, 0.06);
+        });
+
+        window.addEventListener('mouseup', () => { 
+            isDrawing = false; 
+            currentLine = null; 
+        });
+
+        function noteIndexFromY(yPos) {
+            const layout = staffLayout();
+            const t = (yPos - layout.top) / (layout.laneH * totalNotes);
+            const idx = Math.floor((1 - t) * totalNotes);
+            return Math.max(0, Math.min(totalNotes - 1, idx));
+        }
+
+        function triggerMusic(yPos, duration = 0.9, volume = 0.12) {
+            if (!audioCtx) return;
+
+            const freq = baseFreqs[noteIndexFromY(yPos)];
+
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            
+            const now = audioCtx.currentTime;
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(volume, now + 0.05);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.start(now);
+            osc.stop(now + duration);
+        }
+
+        function drawGuide() {
+            const layout = staffLayout();
+            const { cols, startX, colGap } = layout;
+
+            ctx.save();
+            for (let row = 0; row < totalNotes; row++) {
+                const y = noteY(row, layout);
+                for (let col = 0; col < cols; col++) {
+                    const x = startX + col * colGap;
+                    const t = gridFade(x, y, layout);
+                    const wr = 255 + (152 - 255) * t;
+                    const wg = 255 + (150 - 255) * t;
+                    const wb = 255 + (241 - 255) * t;
+                    const a = 0.18 - t * 0.08;
+                    ctx.fillStyle = `rgba(${wr}, ${wg}, ${wb}, ${a})`;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3.2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            ctx.restore();
+        }
+
+        function strokeLine(line) {
+            ctx.beginPath();
+            ctx.moveTo(line.points[0].x, line.points[0].y);
+            for (let j = 1; j < line.points.length; j++) {
+                ctx.lineTo(line.points[j].x, line.points[j].y);
+            }
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.92)';
+            ctx.lineWidth = 0.8;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        function drawNote(pt) {
+            ctx.fillStyle = '#9896f1';
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 4.2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGuide();
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                if (line.points.length > 1) strokeLine(line);
+
+                for (let j = 0; j < line.points.length; j++) {
+                    drawNote(line.points[j]);
+                }
+            }
+
+            if (isPlaying) {
+                scanX += scanSpeed;
+                if (scanX > canvas.width) {
+                    scanX = 0;
+                    lines.forEach(line => line.points.forEach(p => p.played = false));
+                }
+
+                let grad = ctx.createLinearGradient(scanX - 25, 0, scanX + 25, 0);
+                grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+                grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.18)');
+                grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                ctx.fillStyle = grad;
+                ctx.fillRect(scanX - 25, 0, 50, canvas.height);
+
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+                    for (let j = 0; j < line.points.length; j++) {
+                        let pt = line.points[j];
+                        if (!pt.played && Math.abs(pt.x - scanX) <= scanSpeed + 1.5) {
+                            pt.played = true;
+                            triggerMusic(pt.y, 1.4, 0.18);
+                        }
+                    }
+                }
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+
+        function startPlay() {
+            if (!started) return;
+            initAudio();
+            if (!isPlaying) {
+                isPlaying = true;
+                playBtn.classList.add('active');
+            }
+        }
+        window.startPlay = startPlay;
+
+        playBtn.addEventListener('click', startPlay);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.key === ' ') {
+                e.preventDefault();
+                beginUniverse();
+                return;
+            }
+            if (e.key !== 'Enter' || !started) return;
+            e.preventDefault();
+            startPlay();
+        });
+
+        stopBtn.addEventListener('click', () => {
+            isPlaying = false;
+            scanX = 0;
+            playBtn.classList.remove('active');
+            lines.forEach(line => line.points.forEach(p => p.played = false));
+        });
+
+        clearBtn.addEventListener('click', () => {
+            lines = [];
+            currentLine = null;
+            scanX = 0;
+            isPlaying = false;
+            playBtn.classList.remove('active');
+        });
+
+        tempoSlider.addEventListener('input', (e) => {
+            bpm = parseInt(e.target.value);
+            tempoValue.textContent = bpm;
+            scanSpeed = (bpm / 60) * 1.8;
+        });
+
+        window.stopUniverse = function () {
+            started = false;
+            document.body.classList.remove('is-on', 'is-playing');
+            guideCopy?.classList.remove('is-gone');
+            isPlaying = false;
+            scanX = 0;
+            isDrawing = false;
+            currentLine = null;
+            playBtn.classList.remove('active');
+            lines.forEach(line => line.points.forEach(p => p.played = false));
+            if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+        };
+
+        window.startUniverse = function () {
+            if (!document.body.classList.contains('is-on')) {
+                document.body.classList.add('is-on');
+            }
+            resize();
+        };
+
+        window.beginUniverse = beginUniverse;
+
+        window.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            parent.postMessage({ type: 'card-interact-wheel', deltaY: event.deltaY }, '*');
+        }, { passive: false });
+    </script>
+</body>
+</html>
