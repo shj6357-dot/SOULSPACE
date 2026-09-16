@@ -138,10 +138,6 @@
         font-size: clamp(1.12rem, 1.75vw, 1.4rem);
       }
 
-      .track-left .about-copy p + p {
-        margin-top: 1.05rem;
-      }
-
       .track-left .brand p {
         font-size: clamp(0.82rem, 1.4vw, 1.18rem);
         margin-top: -0.35em;
@@ -647,8 +643,8 @@
       .intro-soulspace-tag {
         font-family: Montserrat, "Helvetica Neue", sans-serif;
         font-weight: 700;
-        margin-top: 0;
-        transform: translateY(-0.85rem);
+        margin-top: 0.85rem;
+        transform: none;
         font-size: clamp(0.68rem, 1.15vw, 1rem);
         letter-spacing: 0.04em;
         color: #1e4d9c;
@@ -657,6 +653,11 @@
       .intro-soulspace .about-copy {
         width: min(74rem, 96vw);
         padding: 3.5rem 0 0;
+      }
+
+      .intro-soulspace .about-copy p + p,
+      .track-left .about-copy p + p {
+        margin-top: 0.55rem;
       }
 
       .intro-soulspace .about-copy p:last-child,
