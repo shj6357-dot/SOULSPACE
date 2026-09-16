@@ -1379,7 +1379,8 @@
       body.is-card-interact #galleryAbout,
       body.is-card-interact #galleryMenu,
       body.is-about #galleryGuide,
-      body.is-about #galleryAbout {
+      body.is-about #galleryAbout,
+      body.is-about #galleryMark {
         opacity: 0 !important;
         visibility: hidden !important;
         pointer-events: none !important;
@@ -2800,19 +2801,6 @@
       </div>
     </div>
 
-    <div class="site-utils" id="siteUtils">
-      <button class="util-btn" id="soundToggle" type="button" aria-label="사운드 재생" aria-pressed="false">
-        <svg class="icon-sound-off" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4.5 9.5v5h3.2L12 18.2V5.8L7.7 9.5H4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-          <path d="M16.2 9.2 20 13m0-3.8-3.8 3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-        <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4.5 9.5v5h3.2L12 18.2V5.8L7.7 9.5H4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-          <path d="M15.4 8.8a4.2 4.2 0 0 1 0 6.4M17.8 6.6a7.2 7.2 0 0 1 0 10.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-
     <p class="gallery-mark" id="galleryMark">
       <span class="soul-logo">soulspace</span>
     </p>
@@ -3528,7 +3516,7 @@
         resetAboutScroll();
         panTrack(aboutX);
         gsap.to("#galleryClose", { autoAlpha: 1, duration: 0.35, overwrite: true });
-        gsap.to("#galleryAbout, #galleryGuide", { autoAlpha: 0, duration: 0.2, overwrite: true });
+        gsap.to("#galleryAbout, #galleryGuide, #galleryMark", { autoAlpha: 0, duration: 0.2, overwrite: true });
       }
 
       function goToGallery() {
@@ -3543,7 +3531,7 @@
         resetAboutScroll();
         panTrack(landX);
         gsap.to("#galleryClose", { autoAlpha: 0, duration: 0.35, overwrite: true });
-        gsap.to("#galleryAbout, #galleryGuide", { autoAlpha: 1, duration: 0.35, overwrite: true });
+        gsap.to("#galleryAbout, #galleryGuide, #galleryMark", { autoAlpha: 1, duration: 0.35, overwrite: true });
       }
 
       document.querySelector("#card01").addEventListener("click", () => openCardFocus("01"));
@@ -3635,78 +3623,6 @@
       document.querySelector("#galleryClose").addEventListener("click", goToGallery);
       document.querySelector("#cardInteractClose").addEventListener("click", closeCardInteract);
       document.querySelector("#galleryMark").addEventListener("click", goToGallery);
-
-      const soundToggle = document.querySelector("#soundToggle");
-      const ambient = {
-        ctx: null,
-        nodes: [],
-        master: null,
-        start() {
-          const AC = window.AudioContext || window.webkitAudioContext;
-          if (!AC) return;
-          if (!this.ctx) this.ctx = new AC();
-          const ctx = this.ctx;
-          if (ctx.state === "suspended") ctx.resume();
-          this.stop(true);
-          const master = ctx.createGain();
-          master.gain.setValueAtTime(0, ctx.currentTime);
-          master.gain.linearRampToValueAtTime(0.042, ctx.currentTime + 1.4);
-          master.connect(ctx.destination);
-          const addOsc = (freq, detune, type, vol) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = type;
-            osc.frequency.value = freq;
-            osc.detune.value = detune;
-            gain.gain.value = vol;
-            osc.connect(gain);
-            gain.connect(master);
-            osc.start();
-            this.nodes.push(osc);
-          };
-          addOsc(98, 0, "sine", 0.42);
-          addOsc(147, 5, "sine", 0.28);
-          addOsc(196, -7, "sine", 0.16);
-          const lfo = ctx.createOscillator();
-          const lfoGain = ctx.createGain();
-          lfo.frequency.value = 0.06;
-          lfoGain.gain.value = 0.01;
-          lfo.connect(lfoGain);
-          lfoGain.connect(master.gain);
-          lfo.start();
-          this.nodes.push(lfo);
-          this.master = master;
-        },
-        stop(keepCtx) {
-          this.nodes.forEach((node) => {
-            try { node.stop(); } catch (e) {}
-          });
-          this.nodes = [];
-          if (this.master) {
-            try { this.master.disconnect(); } catch (e) {}
-            this.master = null;
-          }
-          if (!keepCtx && this.ctx) {
-            this.ctx.close().catch(() => {});
-            this.ctx = null;
-          }
-        },
-      };
-
-      const syncSoundButton = () => {
-        const on = document.documentElement.classList.contains("is-sound-on");
-        soundToggle.setAttribute("aria-pressed", on ? "true" : "false");
-        soundToggle.setAttribute("aria-label", on ? "사운드 끄기" : "사운드 재생");
-      };
-
-      soundToggle.addEventListener("click", () => {
-        const on = document.documentElement.classList.toggle("is-sound-on");
-        if (on) ambient.start();
-        else ambient.stop();
-        try { localStorage.setItem("soulspace-sound", on ? "on" : "off"); } catch (e) {}
-        syncSoundButton();
-      });
-      syncSoundButton();
 
       gsap.set(".viewport", { opacity: 1 });
       gsap.set("#cardFocusView", { autoAlpha: 0 });
