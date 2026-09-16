@@ -1231,10 +1231,10 @@
       }
 
       .gallery-mark-close {
-        top: 4rem;
-        right: 7.2rem;
-        letter-spacing: 0;
-        font-size: 2.3rem;
+        top: 5rem;
+        right: 11rem;
+        letter-spacing: 0.02em;
+        font-size: clamp(0.95rem, 1.1vw, 1.28rem);
         opacity: 0;
         visibility: hidden;
       }
@@ -1378,7 +1378,8 @@
       body.is-card-open #galleryScroll,
       body.is-card-interact #galleryAbout,
       body.is-card-interact #galleryMenu,
-      body.is-about #galleryGuide {
+      body.is-about #galleryGuide,
+      body.is-about #galleryAbout {
         opacity: 0 !important;
         visibility: hidden !important;
         pointer-events: none !important;
@@ -2824,7 +2825,7 @@
       </svg>
     </button>
     <p class="gallery-mark gallery-scroll" id="galleryScroll">SCROLL</p>
-    <p class="gallery-mark gallery-mark-about gallery-mark-close" id="galleryClose">×</p>
+    <p class="gallery-mark gallery-mark-about gallery-mark-close" id="galleryClose">MENU</p>
     <button class="gallery-arrow gallery-arrow-left" id="galleryArrowLeft" type="button" aria-label="이전 카드">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M14.5 6.5L9 12l5.5 5.5" stroke="currentColor" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -3527,7 +3528,7 @@
         resetAboutScroll();
         panTrack(aboutX);
         gsap.to("#galleryClose", { autoAlpha: 1, duration: 0.35, overwrite: true });
-        gsap.to("#galleryGuide", { autoAlpha: 0, duration: 0.2, overwrite: true });
+        gsap.to("#galleryAbout, #galleryGuide", { autoAlpha: 0, duration: 0.2, overwrite: true });
       }
 
       function goToGallery() {
@@ -3542,7 +3543,7 @@
         resetAboutScroll();
         panTrack(landX);
         gsap.to("#galleryClose", { autoAlpha: 0, duration: 0.35, overwrite: true });
-        gsap.to("#galleryGuide", { autoAlpha: 1, duration: 0.35, overwrite: true });
+        gsap.to("#galleryAbout, #galleryGuide", { autoAlpha: 1, duration: 0.35, overwrite: true });
       }
 
       document.querySelector("#card01").addEventListener("click", () => openCardFocus("01"));
