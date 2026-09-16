@@ -2012,7 +2012,28 @@
         pointer-events: none;
       }
 
-      body.is-card-interact .card-interact-close {
+      .card-interact-menu {
+        position: absolute;
+        top: 5rem;
+        right: 11rem;
+        z-index: 40;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        font-family: Montserrat, "Helvetica Neue", sans-serif;
+        font-weight: 700;
+        font-size: clamp(0.95rem, 1.1vw, 1.28rem);
+        letter-spacing: 0.02em;
+        line-height: 1;
+        color: #2c3640;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      body.is-card-interact .card-interact-close,
+      body.is-card-interact .card-interact-menu {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
@@ -3078,6 +3099,7 @@
           <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
+      <button class="card-interact-menu" id="cardInteractMenu" type="button">MENU</button>
       <button class="card-interact-close" id="cardInteractClose" type="button" aria-label="설명으로 돌아가기">×</button>
     </div>
     <script src="./vendor/gsap.min.js"></script>
@@ -3924,6 +3946,7 @@
       document.querySelector("#galleryAbout").addEventListener("click", goToAbout);
       document.querySelector("#galleryClose").addEventListener("click", goToGallery);
       document.querySelector("#cardInteractClose").addEventListener("click", closeCardInteract);
+      document.querySelector("#cardInteractMenu").addEventListener("click", goToGallery);
       document.querySelector("#galleryMark").addEventListener("click", goToAbout);
 
       gsap.set(".viewport", { opacity: 1 });
