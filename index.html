@@ -292,7 +292,19 @@
         border-radius: 99px;
         background: rgba(120, 169, 237, 0.16);
         opacity: 0;
+        pointer-events: auto;
+        cursor: pointer;
+        z-index: 8;
+        touch-action: none;
+        user-select: none;
         transition: opacity 0.35s ease;
+      }
+
+      .intro-scrollbar::before,
+      .about-scrollbar::before {
+        content: "";
+        position: absolute;
+        inset: -18px -14px;
       }
 
       .intro-scrollbar.is-on,
@@ -309,6 +321,15 @@
         height: 1.7rem;
         border-radius: 99px;
         background: rgba(120, 169, 237, 0.4);
+        cursor: grab;
+        pointer-events: auto;
+        touch-action: none;
+      }
+
+      .intro-scrollbar-thumb.is-drag,
+      .about-scrollbar-thumb.is-drag {
+        cursor: grabbing;
+        background: rgba(95, 148, 196, 0.7);
       }
 
       .intro-hero {
@@ -3070,6 +3091,51 @@
       introPane.addEventListener("scroll", syncIntroScrollbar, { passive: true });
       syncIntroScrollbar();
 
+      function bindScrollbarDrag(track, thumb, onProgress) {
+        if (!track || !thumb) return;
+        let dragging = false;
+
+        const progressFromEvent = (event) => {
+          const rect = track.getBoundingClientRect();
+          const thumbH = thumb.offsetHeight;
+          const travel = Math.max(rect.height - thumbH, 1);
+          return Math.max(0, Math.min(1, (event.clientY - rect.top - thumbH / 2) / travel));
+        };
+
+        const onMove = (event) => {
+          if (!dragging) return;
+          event.preventDefault();
+          onProgress(progressFromEvent(event));
+        };
+
+        const onUp = () => {
+          if (!dragging) return;
+          dragging = false;
+          thumb.classList.remove("is-drag");
+          window.removeEventListener("pointermove", onMove);
+          window.removeEventListener("pointerup", onUp);
+          window.removeEventListener("pointercancel", onUp);
+        };
+
+        track.addEventListener("pointerdown", (event) => {
+          if (event.button != null && event.button !== 0) return;
+          event.preventDefault();
+          event.stopPropagation();
+          dragging = true;
+          thumb.classList.add("is-drag");
+          onProgress(progressFromEvent(event));
+          window.addEventListener("pointermove", onMove);
+          window.addEventListener("pointerup", onUp);
+          window.addEventListener("pointercancel", onUp);
+        });
+      }
+
+      bindScrollbarDrag(introScrollbar, introScrollThumb, (t) => {
+        if (!introPane) return;
+        const max = introPane.scrollHeight - introPane.clientHeight;
+        introPane.scrollTop = t * Math.max(max, 0);
+      });
+
       (function setupPortalReveal() {
         const portalScene = document.querySelector(".intro-portal");
         const portalArt = document.querySelector(".intro-portal-art");
@@ -3234,6 +3300,21 @@
         return Math.max(0, aboutStory.scrollHeight - window.innerHeight);
       }
 
+      let aboutDragging = false;
+
+      function aboutTravel() {
+        if (!aboutStory) return 0;
+        return Math.max(0, aboutStory.scrollHeight - window.innerHeight);
+      }
+
+      function setAboutProgress(t) {
+        aboutProgress = gsap.utils.clamp(0, 1, t);
+        aboutPage = Math.round(aboutProgress * ABOUT_PAGE_MAX);
+        gsap.killTweensOf(aboutStory);
+        gsap.set(aboutStory, { y: -aboutProgress * aboutTravel() });
+        syncAboutScrollbar();
+      }
+
       function goAboutPage(page) {
         aboutPage = gsap.utils.clamp(0, ABOUT_PAGE_MAX, page);
         aboutProgress = ABOUT_PAGE_MAX > 0 ? aboutPage / ABOUT_PAGE_MAX : 0;
@@ -3262,6 +3343,15 @@
         if (aboutScrollHint) aboutScrollHint.classList.toggle("is-off", aboutProgress > 0.02);
         if (aboutScrollbar) aboutScrollbar.classList.toggle("is-on", aboutProgress > 0.02);
       }
+
+      bindScrollbarDrag(aboutScrollbar, aboutScrollThumb, (t) => {
+        if (view !== "about") return;
+        aboutDragging = true;
+        setAboutProgress(t);
+      });
+      window.addEventListener("pointerup", () => {
+        aboutDragging = false;
+      });
       const CARD_FOCUS = {
         "01": "BLANK",
         "02": "OVERTHINKING",
@@ -3421,7 +3511,7 @@
               return;
             }
             if (view === "about") {
-              if (Math.abs(event.deltaY) < 6) return;
+              if (aboutDragging || Math.abs(event.deltaY) < 6) return;
               const now = performance.now();
               if (now - aboutWheelAt < 420) return;
               aboutWheelAt = now;
