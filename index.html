@@ -1994,10 +1994,10 @@
       }
 
       .card-interact-close {
-        position: absolute;
+        position: fixed;
         top: 4.6rem;
         right: 5.5rem;
-        z-index: 40;
+        z-index: 80;
         border: 0;
         background: transparent;
         padding: 0;
@@ -2013,10 +2013,10 @@
       }
 
       .card-interact-menu {
-        position: absolute;
-        top: 5rem;
-        right: 11rem;
-        z-index: 40;
+        position: fixed;
+        top: 5.05rem;
+        right: 8.4rem;
+        z-index: 80;
         border: 0;
         background: transparent;
         padding: 0;
@@ -2034,9 +2034,9 @@
 
       body.is-card-interact .card-interact-close,
       body.is-card-interact .card-interact-menu {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
       }
 
       .card-focus-down {
