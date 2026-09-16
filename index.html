@@ -55,7 +55,7 @@
         position: relative;
         flex: 0 0 100vw;
         width: 100vw;
-        overflow: visible;
+        overflow: hidden;
         background: transparent;
       }
 
@@ -1472,6 +1472,15 @@
       body.is-gallery-nav:not(.is-card-open) .gallery-arrow.is-dim {
         opacity: 0.2;
         pointer-events: none;
+      }
+
+      body.is-about .gallery-arrow,
+      body.is-about.is-gallery-nav .gallery-arrow,
+      body.is-about.is-gallery-nav:not(.is-card-open) .gallery-arrow,
+      body.is-about.is-gallery-nav:not(.is-card-open) .gallery-arrow.is-dim {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
       }
 
       body.is-card-open #galleryMark,
@@ -3207,7 +3216,7 @@
       let cardFocusProgress = 0;
       let aboutProgress = 0;
       let aboutPage = 0;
-      let aboutWheelLock = false;
+      let aboutWheelAt = 0;
       const aboutStory = document.querySelector("#aboutStory");
       const aboutScrollThumb = document.querySelector(".about-scrollbar-thumb");
       const aboutScrollbar = document.querySelector(".about-scrollbar");
@@ -3217,10 +3226,12 @@
 
       function aboutPageY(page) {
         if (!aboutStory) return 0;
-        const copy = aboutStory.querySelector(".about-copy");
-        const meet = aboutStory.querySelector(".about-meet");
-        const ys = [0, copy ? copy.offsetTop : 0, meet ? meet.offsetTop : 0];
-        return ys[page] || 0;
+        const copy = aboutStory.querySelector(":scope > .about-copy");
+        const meet = aboutStory.querySelector(":scope > .about-meet");
+        if (page <= 0) return 0;
+        if (page === 1) return copy ? copy.offsetTop : 0;
+        if (meet) return meet.offsetTop;
+        return Math.max(0, aboutStory.scrollHeight - window.innerHeight);
       }
 
       function goAboutPage(page) {
@@ -3228,14 +3239,11 @@
         aboutProgress = ABOUT_PAGE_MAX > 0 ? aboutPage / ABOUT_PAGE_MAX : 0;
         gsap.to(aboutStory, {
           y: -aboutPageY(aboutPage),
-          duration: 0.85,
+          duration: 0.8,
           ease: "power3.inOut",
           overwrite: true,
           onUpdate: syncAboutScrollbar,
-          onComplete: () => {
-            aboutWheelLock = false;
-            syncAboutScrollbar();
-          },
+          onComplete: syncAboutScrollbar,
         });
         syncAboutScrollbar();
       }
@@ -3338,6 +3346,10 @@
           ease: "power2.inOut",
           overwrite: true,
           onUpdate: updateGalleryArrows,
+          onComplete: () => {
+            updateGalleryArrows();
+            if (view === "about") setGalleryNav(false);
+          },
         });
       }
 
@@ -3351,6 +3363,10 @@
 
       function setGalleryNav(on) {
         document.body.classList.toggle("is-gallery-nav", on);
+        if (!on || view === "about") {
+          document.body.classList.remove("is-gallery-nav");
+          document.querySelectorAll(".gallery-arrow").forEach((el) => el.classList.remove("is-dim"));
+        }
         updateGalleryArrows();
       }
 
@@ -3358,9 +3374,13 @@
         const left = document.querySelector("#galleryArrowLeft");
         const right = document.querySelector("#galleryArrowRight");
         if (!left || !right) return;
-        if (!document.body.classList.contains("is-gallery-nav") || view !== "gallery") {
-          left.classList.add("is-dim");
-          right.classList.add("is-dim");
+        if (
+          document.body.classList.contains("is-about") ||
+          !document.body.classList.contains("is-gallery-nav") ||
+          view !== "gallery"
+        ) {
+          left.classList.remove("is-dim");
+          right.classList.remove("is-dim");
           return;
         }
         const { minX, maxX } = galleryBounds();
@@ -3401,12 +3421,11 @@
               return;
             }
             if (view === "about") {
-              if (aboutWheelLock || Math.abs(event.deltaY) < 8) return;
-              aboutWheelLock = true;
+              if (Math.abs(event.deltaY) < 6) return;
+              const now = performance.now();
+              if (now - aboutWheelAt < 420) return;
+              aboutWheelAt = now;
               goAboutPage(aboutPage + (event.deltaY > 0 ? 1 : -1));
-              window.setTimeout(() => {
-                aboutWheelLock = false;
-              }, 900);
               return;
             }
             if (view !== "gallery") return;
@@ -3659,7 +3678,7 @@
       function resetAboutScroll() {
         aboutPage = 0;
         aboutProgress = 0;
-        aboutWheelLock = false;
+        aboutWheelAt = 0;
         gsap.killTweensOf(aboutStory);
         gsap.set(aboutStory, { y: 0 });
         syncAboutScrollbar();
@@ -3668,7 +3687,10 @@
       function goToAbout() {
         document.body.classList.add("is-about");
         hideCardFocus();
-        if (view === "about") return;
+        if (view === "about") {
+          setGalleryNav(false);
+          return;
+        }
         view = "about";
         setGalleryNav(false);
         resetAboutScroll();
