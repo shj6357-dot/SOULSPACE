@@ -140,7 +140,7 @@
 
       .track-left .brand p {
         font-size: clamp(0.82rem, 1.4vw, 1.18rem);
-        margin-top: -0.35em;
+        margin-top: 0.55em;
         color: #1e4d9c;
       }
 
@@ -211,6 +211,13 @@
         transform: translateY(-50%);
         border-radius: 99px;
         background: rgba(120, 169, 237, 0.16);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+
+      .intro-scrollbar.is-on,
+      .about-scrollbar.is-on {
+        opacity: 1;
       }
 
       .intro-scrollbar-thumb,
@@ -2943,6 +2950,7 @@
         const t = max > 0 ? introPane.scrollTop / max : 0;
         introScrollThumb.style.transform = `translateY(${t * Math.max(travel, 0)}px)`;
         if (introScrollHint) introScrollHint.classList.toggle("is-off", introPane.scrollTop > 12);
+        if (introScrollbar) introScrollbar.classList.toggle("is-on", introPane.scrollTop > 12);
       };
       introPane.addEventListener("scroll", syncIntroScrollbar, { passive: true });
       syncIntroScrollbar();
@@ -3104,6 +3112,7 @@
         const t = ABOUT_SCROLL_MAX > 0 ? aboutProgress / ABOUT_SCROLL_MAX : 0;
         aboutScrollThumb.style.transform = `translateY(${t * Math.max(travel, 0)}px)`;
         if (aboutScrollHint) aboutScrollHint.classList.toggle("is-off", aboutProgress > 0.02);
+        if (aboutScrollbar) aboutScrollbar.classList.toggle("is-on", aboutProgress > 0.02);
       }
       const CARD_FOCUS = {
         "01": "BLANK",
