@@ -1372,14 +1372,18 @@
       .gallery-menu {
         left: auto;
         right: 5.5rem;
-        top: 5.2rem;
-        width: 1.5rem;
-        height: 0.72rem;
+        top: 5rem;
+        width: auto;
+        height: auto;
         padding: 0;
         border: 0;
         background: transparent;
-        font-size: 0;
-        line-height: 0;
+        font-family: Montserrat, "Helvetica Neue", sans-serif;
+        font-weight: 700;
+        font-size: clamp(0.95rem, 1.1vw, 1.28rem);
+        letter-spacing: 0.02em;
+        line-height: 1;
+        color: #2c3640;
         appearance: none;
         -webkit-appearance: none;
         opacity: 0;
@@ -2994,12 +2998,7 @@
     </p>
     <p class="gallery-mark gallery-mark-guide" id="galleryGuide">A GUIDE TO A LIGHT INNER</p>
     <p class="gallery-mark gallery-mark-about" id="galleryAbout">ABOUT</p>
-    <button class="gallery-mark gallery-menu" id="galleryMenu" type="button" aria-label="카드 목록">
-      <svg viewBox="0 0 24 12" aria-hidden="true">
-        <rect x="0" y="1" width="24" height="2" fill="#2c3640" />
-        <rect x="0" y="9" width="24" height="2" fill="#2c3640" />
-      </svg>
-    </button>
+    <button class="gallery-mark gallery-menu" id="galleryMenu" type="button" aria-label="MENU">MENU</button>
     <p class="gallery-mark gallery-scroll" id="galleryScroll">SCROLL</p>
     <p class="gallery-mark gallery-mark-about gallery-mark-close" id="galleryClose">MENU</p>
     <button class="gallery-arrow gallery-arrow-left" id="galleryArrowLeft" type="button" aria-label="이전 카드">
