@@ -3210,8 +3210,8 @@
         }
         const { minX, maxX } = galleryBounds();
         const x = Number(gsap.getProperty(track, "x"));
-        left.classList.toggle("is-dim", x <= minX + 4);
-        right.classList.toggle("is-dim", x >= maxX - 4);
+        left.classList.toggle("is-dim", x >= maxX - 4);
+        right.classList.toggle("is-dim", x <= minX + 4);
       }
 
       function moveGallery(dir) {
@@ -3268,7 +3268,7 @@
             const next = gsap.utils.clamp(
               minX,
               maxX,
-              gsap.getProperty(track, "x") - event.deltaY
+              gsap.getProperty(track, "x") + event.deltaY - event.deltaX
             );
             gsap.to(track, {
               x: next,
@@ -3559,12 +3559,12 @@
         if (view === "gallery" && !document.body.classList.contains("is-card-open")) {
           if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
             e.preventDefault();
-            moveGallery(1);
+            moveGallery(-1);
             return;
           }
           if (e.key === "ArrowRight" || e.key === "ArrowDown") {
             e.preventDefault();
-            moveGallery(-1);
+            moveGallery(1);
             return;
           }
         }
@@ -3583,8 +3583,8 @@
         e.preventDefault();
         document.querySelector("#universeFrame")?.contentWindow?.startPlay?.();
       });
-      document.querySelector("#galleryArrowLeft").addEventListener("click", () => moveGallery(1));
-      document.querySelector("#galleryArrowRight").addEventListener("click", () => moveGallery(-1));
+      document.querySelector("#galleryArrowLeft").addEventListener("click", () => moveGallery(-1));
+      document.querySelector("#galleryArrowRight").addEventListener("click", () => moveGallery(1));
       const universeFrame = document.querySelector("#universeFrame");
       universeFrame.addEventListener("load", () => {
         if (!universeFrame.getAttribute("src")) return;
