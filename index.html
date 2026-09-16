@@ -711,7 +711,7 @@
         left: auto;
         bottom: auto;
         z-index: 4;
-        width: min(34rem, 86vw);
+        width: min(54rem, 94vw);
         margin: 0;
         transform: none;
         text-align: center;
@@ -738,6 +738,10 @@
         letter-spacing: -0.02em;
         color: #2c3640;
         word-break: keep-all;
+      }
+
+      .portal-explain-body.is-single-line {
+        white-space: nowrap;
       }
 
       .intro-soulspace {
@@ -2822,7 +2826,7 @@
                   <button class="hot-right" type="button" aria-label="DRAINED"></button>
                   <span class="portal-keyword">DRAINED</span>
                 </div>
-                <div class="hotspot hotspot-4" data-key="BURNOUT" data-body="다 타 버린 자리에는 성취도 의무도 두지 않습니다. 손끝의 온기에만 시선을 두고 숨을 고릅니다.">
+                <div class="hotspot hotspot-4" data-key="BURNOUT" data-body="너무 오래 달려 지쳤을 때. 디지털 뽁뽁이를 터뜨리며 천천히 풀어놓습니다.">
                   <button class="hot-top" type="button" aria-label="BURNOUT"></button>
                   <button class="hot-left" type="button" aria-label="BURNOUT"></button>
                   <button class="hot-right" type="button" aria-label="BURNOUT"></button>
@@ -3157,7 +3161,10 @@
 
         const setExplain = (key, body) => {
           if (explainKey) explainKey.textContent = key;
-          if (explainBody) explainBody.textContent = body;
+          if (explainBody) {
+            explainBody.textContent = body;
+            explainBody.classList.toggle("is-single-line", key === "BURNOUT");
+          }
         };
 
         const hidePortal = () => {
