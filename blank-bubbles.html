@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>soulspace — BURNOUT</title>
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./fonts/fonts.css" />
     <style>
         * {
@@ -211,11 +212,8 @@
         }
 
         .done-btn {
-            position: fixed;
-            left: 50%;
-            bottom: 2.35rem;
-            z-index: 30;
-            transform: translateX(-50%);
+            position: static;
+            transform: none;
             margin: 0;
             padding: 0.62rem 1.55rem;
             border: 0;
@@ -232,13 +230,43 @@
             transition: opacity 0.4s ease, transform 0.25s ease, background 0.25s ease;
         }
 
-        body.is-playing:not(.is-replay) .done-btn {
+        .action-row {
+            position: fixed;
+            left: 50%;
+            bottom: 1.8rem;
+            z-index: 30;
+            display: flex;
+            gap: .65rem;
+            transform: translateX(-50%);
+        }
+
+        .reset-btn {
+            margin: 0;
+            min-width: 7.4rem;
+            padding: .72rem 1.35rem;
+            border: 1px solid rgba(134,72,60,.2);
+            border-radius: 999px;
+            background: rgba(255,248,245,.78);
+            color: #8a4d42;
+            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 12px 28px rgba(130,67,55,.1), inset 0 1px 0 rgba(255,255,255,.8);
+            backdrop-filter: blur(10px);
+        }
+
+        body.is-playing:not(.is-replay) .done-btn,
+        body.is-playing .reset-btn {
             opacity: 1;
             pointer-events: auto;
         }
 
         .done-btn:hover {
-            transform: translateX(-50%) scale(1.05);
+            transform: scale(1.04);
         }
 
         body.is-replay .done-btn {
@@ -288,34 +316,219 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.45; }
         }
-    </style>
+
+        /* S — 거품의 입체감과 행동 안내의 가독성 강화 */
+        body {
+            background:
+                radial-gradient(ellipse 68% 58% at 50% 48%, rgba(244,184,169,.27), transparent 72%),
+                linear-gradient(180deg, #fffaf8 0%, #f8ece8 100%);
+        }
+
+        .interaction-caption {
+            position: fixed;
+            left: 50%;
+            top: clamp(4.6rem, 9vh, 6.8rem);
+            z-index: 24;
+            width: min(39rem, 86vw);
+            margin: 0;
+            transform: translateX(-50%);
+            color: #844c43;
+            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-size: clamp(.88rem, 1.08vw, 1rem);
+            font-weight: 500;
+            line-height: 1.7;
+            letter-spacing: -.02em;
+            text-align: center;
+            text-shadow: 0 1px 12px rgba(255,255,255,.94);
+            pointer-events: none;
+        }
+
+        .bubble-grid {
+            width: min(88vw, 1080px);
+            height: min(43vw, 520px);
+            gap: 18px;
+            padding: 18px;
+            border: 1px solid rgba(164,91,76,.12);
+            border-radius: 38% 62% 46% 54% / 56% 42% 58% 44%;
+            background: radial-gradient(ellipse, rgba(255,255,255,.24), rgba(249,220,213,.07) 62%, transparent 82%);
+            box-shadow: inset 0 0 64px rgba(255,255,255,.34), 0 26px 68px rgba(143,75,62,.06);
+        }
+
+        .bubble {
+            border: 1px solid rgba(135,77,67,.22);
+            background: radial-gradient(circle at 34% 32%,
+                rgba(255,255,255,.88) 0%,
+                rgba(255,255,255,.34) 27%,
+                rgba(250,201,190,.14) 62%,
+                rgba(147,79,68,.12) 86%,
+                rgba(255,255,255,.58) 100%);
+            box-shadow:
+                inset 0 0 12px rgba(255,255,255,.82),
+                inset -3px -3px 9px rgba(120,64,55,.15),
+                inset 3px 3px 8px rgba(255,255,255,.92),
+                0 10px 24px rgba(118,63,52,.13);
+        }
+
+        .bubble:hover {
+            transform: scale(1.025);
+            border-color: rgba(125,68,58,.34);
+            box-shadow:
+                inset 0 0 14px rgba(255,255,255,.9),
+                inset -3px -3px 9px rgba(120,64,55,.16),
+                0 13px 30px rgba(118,63,52,.17);
+        }
+
+        .done-btn {
+            bottom: auto;
+            min-width: 8.7rem;
+            padding: .72rem 1.45rem;
+            border: 1px solid rgba(134,72,60,.2);
+            background: rgba(170,82,65,.88);
+            box-shadow: 0 12px 30px rgba(130,67,55,.18), inset 0 1px 0 rgba(255,255,255,.26);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-size: .82rem;
+            letter-spacing: .08em;
+        }
+
+        @media (max-height: 700px) {
+            .interaction-caption { top: 4rem; }
+            .bubble-grid { height: min(40vw, 440px); }
+        }
+
+        /* U — 거품이 아닌 압력의 막이 서서히 느슨해지는 장면 */
+        body {
+            --release: 0;
+            --release-alpha: .32;
+            --release-overlay: .18;
+            --release-field-scale: 1;
+            --release-membrane-scale: 1;
+            --release-membrane-opacity: .76;
+            --release-grid-scale: 1;
+            --release-inset: 64px;
+            background:
+                radial-gradient(ellipse 62% 52% at 50% 48%, rgba(241,151,132,var(--release-alpha)), transparent 72%),
+                linear-gradient(180deg, #fffaf8 0%, #f8ece8 100%);
+        }
+
+        body::after {
+            opacity: var(--release-overlay);
+            mix-blend-mode: multiply;
+            background:
+                repeating-radial-gradient(ellipse at 50% 50%, transparent 0 66px, rgba(154,76,61,.08) 67px 68px, transparent 69px 126px),
+                radial-gradient(ellipse at center, transparent 35%, rgba(164,80,64,.1) 78%, rgba(129,58,47,.12) 100%);
+            transform: scale(var(--release-field-scale));
+            transition: opacity .9s ease, transform 1.4s ease;
+        }
+
+        .pressure-field {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            z-index: 0;
+            width: min(78vw, 980px);
+            height: min(58vw, 650px);
+            transform: translate(-50%, -50%) scale(var(--release-membrane-scale));
+            border: 1px solid rgba(164,86,72,.1);
+            border-radius: 45% 55% 48% 52% / 54% 44% 56% 46%;
+            box-shadow: 0 0 0 42px rgba(221,135,116,.035), 0 0 0 96px rgba(221,135,116,.022), inset 0 0 94px rgba(182,91,74,.055);
+            opacity: var(--release-membrane-opacity);
+            pointer-events: none;
+            transition: transform 1.2s ease, opacity 1.2s ease, border-radius 1.2s ease;
+            animation: pressureBreathe 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes pressureBreathe {
+            from { border-radius: 45% 55% 48% 52% / 54% 44% 56% 46%; }
+            to { border-radius: 53% 47% 56% 44% / 46% 55% 45% 54%; }
+        }
+
+        .bubble-grid {
+            transition: transform 1.1s ease, box-shadow 1.1s ease, border-radius 1.1s ease;
+            transform: scale(var(--release-grid-scale));
+            box-shadow: inset 0 0 var(--release-inset) rgba(255,255,255,.38), 0 26px 68px rgba(143,75,62,.06);
+        }
+
+        .burst-ring {
+            border-color: rgba(255,255,255,.9);
+            animation-duration: .72s;
+        }
+
+        @keyframes ringBurst {
+            0% { width: 12px; height: 12px; opacity: .9; transform: translate(-50%, -50%) scale(.5); }
+            100% { width: 150px; height: 150px; opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
+        }
+body { background:linear-gradient(145deg,#fffaf8 12%,#f4ded7 48%,#fcf0eb 74%,#f0d6d0); }
+    body::before,.pressure-field { display:none; }
+    body::after { background:linear-gradient(120deg,transparent 22%,rgba(255,255,255,.86) 43%,rgba(212,139,120,.24) 70%,transparent 88%); filter:blur(36px); opacity:var(--release-overlay); mix-blend-mode:normal; }
+    .bubble-grid { border:0; border-radius:0; background:transparent; box-shadow:none; }
+    @media(max-width:1024px) {
+      body { height:100svh; }
+      .bubble-grid { width:88vw; height:44vw; max-height:13rem; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(2,1fr); gap:8px; padding:4px; }
+      .bubble { touch-action:none; }
+      .interaction-caption { top:5rem; width:86vw; font-size:.85rem; word-break:keep-all; }
+      .action-row { bottom:max(12px,env(safe-area-inset-bottom)); }
+      .done-btn,.reset-btn { min-height:44px; }
+    }
+    @media(max-width:767px) {
+      body::after { filter:blur(15px); opacity:var(--release-overlay); }
+      .bubble-grid { width:84vw; height:42vw; max-height:11.5rem; gap:7px; }
+      .interaction-caption { top:4.65rem; width:84vw; font-size:.8rem; line-height:1.5; }
+      .action-row { gap:8px; }
+    }
+  </style>
 </head>
 <body>
 
+    <div class="pressure-field" aria-hidden="true"></div>
     <div class="play-layer">
         <div class="bubble-grid" id="mainGrid"></div>
     </div>
+    <p class="interaction-caption">마음에 쌓인 압박을 떠올리며, 거품을 하나씩 천천히 터뜨려 보세요.</p>
     <div class="guide-copy" id="guideCopy">
-        <p>거품을 톡톡 터뜨리며 복잡한 머릿속을 비워보세요.</p>
+          <p>거품을 하나씩 터뜨리며, 쌓인 압박을 천천히 풀어보세요.</p>
         <p class="guide-start"><b>Space</b> 를 누르면 시작됩니다.</p>
     </div>
-    <button class="done-btn" id="doneBtn" type="button">LOOK IN</button>
+    <div class="action-row">
+        <button class="reset-btn" id="resetBtn" type="button">처음부터</button>
+        <button class="done-btn" id="doneBtn" type="button">흔적 보기</button>
+    </div>
 
     <script>
         const mainGrid = document.getElementById('mainGrid');
         const guideCopy = document.getElementById('guideCopy');
         const doneBtn = document.getElementById('doneBtn');
+        const resetBtn = document.getElementById('resetBtn');
         let started = false;
         let replaying = false;
         let popLog = [];
         let playStartedAt = 0;
         let replayTimer = 0;
+        let lastDragPopAt = 0;
+        const MAX_LEVEL = 2;
+        const MAX_LOG = 120;
+        let releasedPressure = 0;
+
+        function syncRelease() {
+            const release = Math.min(1, releasedPressure / 34);
+            document.body.style.setProperty('--release', release.toFixed(3));
+            document.body.style.setProperty('--release-alpha', (.32 - release * .18).toFixed(3));
+            document.body.style.setProperty('--release-overlay', (.18 - release * .08).toFixed(3));
+            document.body.style.setProperty('--release-field-scale', (1 - release * .035).toFixed(3));
+            document.body.style.setProperty('--release-membrane-scale', (1 - release * .08).toFixed(3));
+            document.body.style.setProperty('--release-membrane-opacity', (.76 - release * .34).toFixed(3));
+            document.body.style.setProperty('--release-grid-scale', (1 - release * .025).toFixed(3));
+            document.body.style.setProperty('--release-inset', `${64 + release * 34}px`);
+        }
 
         function resetGrid() {
             mainGrid.innerHTML = '';
             for (let i = 0; i < 8; i++) {
                 mainGrid.appendChild(createBubble(1, String(i)));
             }
+            releasedPressure = 0;
+            syncRelease();
         }
 
         function beginBubbles() {
@@ -325,7 +538,7 @@
             popLog = [];
             document.body.classList.add('is-on', 'is-playing');
             guideCopy?.classList.add('is-gone');
-            doneBtn.textContent = 'LOOK IN';
+            doneBtn.textContent = '흔적 보기';
             initAudio();
         }
 
@@ -356,26 +569,30 @@
             }
             replaying = false;
             document.body.classList.remove('is-replay');
-            doneBtn.textContent = 'RESET';
+            doneBtn.textContent = '다시 시작';
         }
 
         function resetAfterLook() {
-            if (replaying) return;
+            replaying = false;
+            clearTimeout(replayTimer);
+            document.body.classList.remove('is-replay');
             resetGrid();
             popLog = [];
             playStartedAt = performance.now();
             isMouseDown = false;
-            doneBtn.textContent = 'LOOK IN';
+            doneBtn.textContent = '흔적 보기';
         }
 
         doneBtn.addEventListener('click', () => {
-            if (doneBtn.textContent === 'RESET') resetAfterLook();
+            if (doneBtn.textContent === '다시 시작') resetAfterLook();
             else replayPops();
         });
+        resetBtn.addEventListener('click', resetAfterLook);
 
         let isMouseDown = false;
-        window.addEventListener('mousedown', () => { isMouseDown = true; });
-        window.addEventListener('mouseup', () => { isMouseDown = false; });
+        window.addEventListener('pointerdown', () => { isMouseDown = true; });
+        window.addEventListener('pointerup', () => { isMouseDown = false; });
+        window.addEventListener('pointercancel', () => { isMouseDown = false; });
 
         let audioCtx = null;
         function initAudio() {
@@ -404,7 +621,7 @@
             osc.frequency.exponentialRampToValueAtTime(randomPitch * 1.5, now + 0.03);
 
             const duration = Math.max(0.04, 0.08 - level * 0.005);
-            const volume = Math.max(0.06, 0.18 - level * 0.01);
+            const volume = Math.max(0.035, 0.105 - level * 0.012);
 
             gainNode.gain.setValueAtTime(volume, now);
             gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
@@ -422,9 +639,9 @@
             ring.style.left = `${x}px`;
             ring.style.top = `${y}px`;
             document.body.appendChild(ring);
-            setTimeout(() => ring.remove(), 280);
+            setTimeout(() => ring.remove(), 760);
 
-            const dropCount = 6;
+            const dropCount = 1;
             for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
                 drop.classList.add('sparkle-drop');
@@ -461,11 +678,25 @@
                     x: clientX,
                     y: clientY,
                 });
+                if (popLog.length > MAX_LOG) popLog.shift();
             }
 
             initAudio();
             playPopSound(level);
             triggerSplash(clientX, clientY);
+            releasedPressure += level === 1 ? 1.4 : 1;
+            syncRelease();
+
+            if (level >= MAX_LEVEL) {
+                bubble.classList.add('is-popped');
+                bubble.style.pointerEvents = 'none';
+                bubble.animate([
+                    { opacity: 1, transform: 'scale(1)' },
+                    { opacity: 0, transform: 'scale(.72)' }
+                ], { duration: 220, easing: 'ease-out', fill: 'forwards' });
+                setTimeout(() => bubble.remove(), 230);
+                return;
+            }
 
             const splitGrid = document.createElement('div');
             splitGrid.classList.add('split-grid');
@@ -488,13 +719,17 @@
                 bubble.classList.add('micro');
             }
 
-            bubble.addEventListener('mousedown', function(e) {
+            bubble.addEventListener('pointerdown', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 popBubble(bubble, level, e.clientX, e.clientY);
             });
 
-            bubble.addEventListener('mouseenter', function(e) {
-                if (isMouseDown) {
+            bubble.addEventListener('pointerenter', function(e) {
+                if (isMouseDown && e.pointerType === 'mouse') {
+                    const now = performance.now();
+                    if (now - lastDragPopAt < 42) return;
+                    lastDragPopAt = now;
                     popBubble(bubble, level, e.clientX, e.clientY);
                 }
             });
@@ -512,7 +747,10 @@
             isMouseDown = false;
             document.body.classList.remove('is-on', 'is-playing', 'is-replay');
             guideCopy?.classList.remove('is-gone');
-            doneBtn.textContent = 'LOOK IN';
+            doneBtn.textContent = '흔적 보기';
+            lastDragPopAt = 0;
+            releasedPressure = 0;
+            syncRelease();
             resetGrid();
             if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
         };
