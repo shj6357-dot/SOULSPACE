@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>soulspace — DRAINED</title>
-    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./fonts/fonts.css" />
     <style>
+      :root {
+        --font-en: "Butler Stencil", "Noto Serif KR", Georgia, serif;
+        --font-ko: "Noto Serif KR", "Butler Stencil", Georgia, serif;
+      }
+
         * { box-sizing: border-box; }
         html, body { height: 100%; }
 
@@ -19,7 +23,7 @@
             align-items: stretch;
             height: 100vh;
             background: #f5f4fb;
-            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-family: var(--font-en);
             letter-spacing: -0.03em;
             overflow: hidden;
             user-select: none;
@@ -32,18 +36,18 @@
             left: 50%;
             top: 50%;
             z-index: 0;
-            width: min(42vmin, 24.5rem);
+            width: min(168vmin, 88rem);
             aspect-ratio: 1;
             border-radius: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(0.25);
             pointer-events: none;
-            filter: blur(10px);
+            will-change: transform;
             background: radial-gradient(
                 circle at 50% 50%,
                 #9896f1 0%,
-                rgba(152, 150, 241, 0.8) 38%,
-                rgba(196, 194, 246, 0.3) 64%,
-                transparent 78%
+                rgba(152, 150, 241, 0.8) 30%,
+                rgba(196, 194, 246, 0.3) 55%,
+                transparent 74%
             );
         }
 
@@ -53,12 +57,10 @@
 
         @keyframes orbGrow {
             0% {
-                width: min(42vmin, 24.5rem);
-                filter: blur(10px);
+                transform: translate(-50%, -50%) scale(0.25);
             }
             100% {
-                width: min(168vmin, 88rem);
-                filter: blur(64px);
+                transform: translate(-50%, -50%) scale(1);
             }
         }
 
@@ -83,7 +85,6 @@
             background: transparent;
             overflow: hidden;
             cursor: crosshair;
-            touch-action: none;
         }
 
         canvas {
@@ -111,7 +112,7 @@
         .btn {
             background: none;
             border: none;
-            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-family: var(--font-en);
             font-size: clamp(0.82rem, 1.35vw, 1.05rem);
             font-weight: 800;
             font-style: normal;
@@ -133,7 +134,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-family: var(--font-en);
             font-size: clamp(0.82rem, 1.35vw, 1.05rem);
             font-weight: 800;
             font-style: normal;
@@ -172,14 +173,12 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
-            filter: blur(3.5px);
             opacity: 0.72;
             pointer-events: none;
-            transition: filter 0.9s ease, opacity 0.9s ease;
+            transition: opacity 0.9s ease;
         }
 
         body.is-playing .play-layer {
-            filter: blur(0);
             opacity: 1;
             pointer-events: auto;
         }
@@ -205,7 +204,7 @@
         .guide-copy p {
             margin: 0;
             color: #4e4bb8;
-            font-family: Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            font-family: var(--font-ko);
             font-size: clamp(0.92rem, 1.35vw, 1.12rem);
             line-height: 1.85;
             letter-spacing: -0.025em;
@@ -218,7 +217,7 @@
         }
 
         .guide-start b {
-            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-family: var(--font-en);
             font-weight: 700;
         }
 
@@ -227,159 +226,115 @@
             50% { opacity: 0.45; }
         }
 
-        /* S — 소리 도구와 화면 조작부의 가독성 강화 */
-        body {
-            padding: 0;
-            background:
-                radial-gradient(ellipse 68% 56% at 50% 42%, rgba(184,182,236,.3), transparent 72%),
-                linear-gradient(180deg, #f8f7fc 0%, #eeedf8 100%);
-        }
-
-        .play-layer {
-            padding: clamp(24px, 4vw, 54px) clamp(26px, 4vw, 58px) clamp(22px, 3vw, 42px);
-        }
-
-        .interaction-caption {
-            position: absolute;
-            left: 50%;
-            top: clamp(1.6rem, 5vh, 3.6rem);
-            z-index: 4;
-            width: min(38rem, 84vw);
-            margin: 0;
-            transform: translateX(-50%);
-            color: #484777;
-            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
-            font-size: clamp(.88rem, 1.08vw, 1rem);
+        .btn,
+        .tempo-container {
+            font-family: var(--font-en);
+            font-size: calc(clamp(0.92rem, 0.82rem + 0.28vw, 1.06rem) / 1.618 * 1.5);
             font-weight: 500;
-            line-height: 1.7;
-            letter-spacing: -.02em;
-            text-align: center;
-            text-shadow: 0 1px 12px rgba(255,255,255,.92);
-        }
-
-        .canvas-container {
-            margin-top: clamp(3.8rem, 9vh, 6rem);
-            border: 1px solid rgba(80,77,145,.14);
-            border-radius: 44% 56% 46% 54% / 54% 45% 55% 46%;
-            background: radial-gradient(ellipse at 50% 52%, rgba(255,255,255,.26), rgba(220,218,247,.08) 60%, transparent 82%);
-            box-shadow: inset 0 0 58px rgba(255,255,255,.34), 0 24px 60px rgba(89,84,159,.07);
-        }
-
-        canvas {
-            filter: contrast(1.18) saturate(1.08) drop-shadow(0 10px 18px rgba(76,73,139,.08));
-        }
-
-        .controls-bar {
-            align-items: center;
-            margin-top: 1rem;
-            padding: .9rem 1.15rem;
-            border: 1px solid rgba(71,69,127,.2);
-            border-radius: 999px;
-            background: rgba(250,249,253,.68);
-            box-shadow: 0 12px 34px rgba(76,71,140,.09), inset 0 1px 0 rgba(255,255,255,.88);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        .btn {
-            color: #41405f;
-            font-size: clamp(.72rem, 1vw, .88rem);
-            letter-spacing: .08em;
+            letter-spacing: 0.1em;
+            color: #5f94c4;
         }
 
         .btn:hover,
-        .btn.active { color: #24233e; }
-
-        .tempo-container {
-            color: #41405f;
-            font-size: clamp(.72rem, 1vw, .88rem);
-            letter-spacing: .06em;
+        .btn.active {
+            color: #3d6ea6;
         }
 
-        .tempo-slider { background: rgba(62,60,100,.54); }
-        .tempo-slider::-webkit-slider-thumb {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #54518e;
-            box-shadow: 0 0 0 4px rgba(122,118,188,.13);
+        .key-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.2em;
+            height: 1.55em;
+            margin: 0 0.2em;
+            padding: 0 0.45em;
+            border: 1.5px solid currentColor;
+            border-radius: 0.4em;
+            font-family: var(--font-en);
+            font-weight: 500;
+            line-height: 1;
         }
 
-        @media (max-width: 700px) {
-            .controls-bar { border-radius: 22px; align-items: flex-start; gap: 1rem; }
-            .tempo-slider { width: 84px; }
+        .key-icon.is-space {
+            min-width: 3.4em;
+            padding-top: 0.15em;
         }
 
-        /* U — 무뎌진 감각이 빛의 신호로 천천히 깨어나는 장면 */
-        body {
-            --awake: .18;
-            background:
-                radial-gradient(ellipse 54% 44% at 50% 48%, rgba(156,151,238,var(--awake)), transparent 72%),
-                radial-gradient(ellipse 88% 68% at 50% 48%, rgba(219,217,249,.36), transparent 76%),
-                linear-gradient(180deg, #faf9fd 0%, #eeedf8 100%);
+        .guide-copy {
+            width: max-content !important;
+            max-width: 96vw;
+            text-align: center !important;
         }
 
-        body::after {
-            opacity: .2;
-            mix-blend-mode: normal;
-            background:
-                repeating-radial-gradient(ellipse at 50% 48%, transparent 0 74px, rgba(102,96,182,.055) 75px 76px, transparent 77px 142px),
-                linear-gradient(120deg, transparent 22%, rgba(255,255,255,.38) 46%, transparent 68%);
-            animation: dormantField 18s ease-in-out infinite alternate;
+        .guide-copy {
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
         }
 
-        @keyframes dormantField {
-            from { transform: translate3d(-1%, .6%, 0) scale(.99); }
-            to { transform: translate3d(1%, -.6%, 0) scale(1.025); }
+        .guide-copy.is-gone {
+            transform: translate(-50%, calc(-50% - 14px)) !important;
         }
 
-        .canvas-container {
-            border-color: rgba(80,77,145,.18);
-            background:
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,.36), transparent 30%),
-                radial-gradient(ellipse at 50% 52%, rgba(255,255,255,.22), rgba(208,205,245,.1) 62%, transparent 84%);
-            box-shadow: inset 0 0 82px rgba(255,255,255,.38), 0 28px 72px rgba(89,84,159,.08);
+        .key-icon {
+            vertical-align: middle;
+            position: relative;
+            top: -0.1em;
         }
-body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfddef); }
-    body::before { display:none; }
-    body::after { background:linear-gradient(120deg,transparent 25%,rgba(255,255,255,.8) 45%,rgba(163,152,207,var(--awake)) 65%,transparent 84%); filter:blur(40px); opacity:.7; }
-    .canvas-container { border:0; border-radius:0; box-shadow:none; background:transparent; }
-    @media(max-width:1024px) {
-      body { height:100svh; }
-      .play-layer { padding:4.5rem 14px max(18px,env(safe-area-inset-bottom)); }
-      .interaction-caption { top:4.5rem; font-size:.84rem; width:88vw; }
-      .canvas-container { margin-top:4.5rem; }
-      .controls-bar { flex-wrap:wrap; justify-content:center; gap:.3rem; padding:8px 12px; border-radius:20px; }
-      .btn-group { width:100%; justify-content:space-around; gap:8px; }
-      .btn { min-height:44px; font-size:.78rem; }
-      .tempo-container { min-height:36px; }
-    }
-    @media(max-width:767px) {
-      body::after { animation:none; filter:blur(16px); opacity:.48; }
-      .play-layer { padding:4.2rem 12px max(14px,env(safe-area-inset-bottom)); }
-      .interaction-caption { top:4.65rem; width:84vw; font-size:.8rem; line-height:1.5; }
-      .canvas-container { margin-top:4.1rem; }
-      .controls-bar { gap:.2rem; padding:7px 10px; }
-      .btn-group { gap:6px; }
-      .tempo-container { min-height:32px; font-size:.68rem; }
-    }
-  </style>
+
+        .btn {
+            animation: ctrlBreath 3.4s ease-in-out infinite;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .btn:nth-of-type(2) { animation-delay: 0.5s; }
+        .btn:nth-of-type(3) { animation-delay: 1s; }
+
+        .btn:hover,
+        .btn.active,
+        .btn:focus-visible {
+            animation: none;
+            text-shadow: 0 0 14px rgba(95, 148, 196, 0.5);
+        }
+
+        @keyframes ctrlBreath {
+            0%, 100% { opacity: 0.62; text-shadow: none; }
+            50% { opacity: 1; text-shadow: 0 0 12px rgba(95, 148, 196, 0.45); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .btn { animation: none; opacity: 1; }
+        }
+      body { -webkit-user-select: none; user-select: none; }
+  input, textarea { -webkit-user-select: text; user-select: text; }
+        canvas { touch-action:none; }
+        @media (max-width: 600px) {
+            body { height:100dvh; padding:20px 16px 76px; }
+            .controls-bar { flex-wrap:wrap; gap:10px; }
+            .btn-group { width:100%; justify-content:space-between; }
+            .btn { min-height:44px; }
+            .tempo-container { width:100%; justify-content:space-between; }
+            .tempo-slider { flex:1; max-width:180px; }
+        }
+</style>
+    <link rel="stylesheet" href="./fonts/butler-stencil/butler-stencil.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&display=swap" />
 </head>
 <body>
 
     <div class="play-layer">
-    <p class="interaction-caption">화면 위를 천천히 이어 작은 소리와 빛의 흐름을 만들어보세요.</p>
     <div class="canvas-container" id="container">
         <canvas id="universeCanvas"></canvas>
     </div>
 
     <div class="controls-bar">
         <div class="btn-group">
-            <button class="btn" id="playBtn">흐름 듣기</button>
-            <button class="btn" id="stopBtn">멈춤</button>
-            <button class="btn" id="clearBtn">비우기</button>
+            <button class="btn" id="playBtn">PLAY</button>
+            <button class="btn" id="stopBtn">STOP</button>
+            <button class="btn" id="clearBtn">CLEAR</button>
         </div>
-        
+
         <div class="tempo-container">
             <span>TEMPO</span>
             <input type="range" id="tempoSlider" class="tempo-slider" min="30" max="150" value="70">
@@ -388,11 +343,27 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
     </div>
     </div>
     <div class="guide-copy" id="guideCopy">
-        <p>지쳐 무뎌진 감각을, 작은 빛과 소리로 하나씩 깨워보세요.</p>
-        <p class="guide-start"><b>Space</b> 를 누르면 시작됩니다.</p>
+        <p>점을 이어 작은 소리와 빛을 깨워보세요.</p>
     </div>
 
     <script>
+        function soundBus(ctx, trim) {
+            if (ctx.__bus) return ctx.__bus;
+            const input = ctx.createGain();
+            input.gain.value = trim;
+            const limit = ctx.createDynamicsCompressor();
+            limit.threshold.value = -20;
+            limit.knee.value = 6;
+            limit.ratio.value = 20;
+            limit.attack.value = 0.002;
+            limit.release.value = 0.15;
+            const level = ctx.createGain();
+            level.gain.value = 1.4;
+            input.connect(limit).connect(level).connect(ctx.destination);
+            ctx.__bus = input;
+            return input;
+        }
+
         const canvas = document.getElementById('universeCanvas');
         const ctx = canvas.getContext('2d');
         const container = document.getElementById('container');
@@ -403,11 +374,8 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
         const tempoValue = document.getElementById('tempoValue');
         const guideCopy = document.getElementById('guideCopy');
         let started = false;
-        let renderFrame = 0;
-        let renderActive = true;
 
         function beginUniverse() {
-            resumeRender();
             if (started) return;
             started = true;
             document.body.classList.add('is-playing');
@@ -430,10 +398,8 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
         let lines = [];
         let currentLine = null;
 
-        const totalNotes = 8;
-        const baseFreqs = [196, 220, 261.63, 293.66, 329.63, 392, 440, 523.25];
-        const MAX_LINES = 4;
-        const MAX_POINTS_PER_LINE = 64;
+        const totalNotes = 12;
+        const baseFreqs = [293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 1174.66, 1318.51];
 
         function staffLayout() {
             const w = canvas.width;
@@ -444,7 +410,7 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
             const laneH = (h - padY * 2) / totalNotes;
             const colGap = Math.max(32, Math.min(48, w * 0.026));
             const innerW = w - padX * 2;
-            const cols = Math.max(16, Math.round(innerW / colGap));
+            const cols = Math.max(2, Math.floor(innerW / colGap) + 1);
             const startX = padX + (innerW - (cols - 1) * colGap) / 2;
             const rect = canvas.getBoundingClientRect();
             const vmin = Math.min(window.innerWidth, window.innerHeight);
@@ -483,77 +449,50 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
         }
 
         let audioCtx = null;
-        const activeVoices = new Set();
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
-        function pointFromEvent(e) {
-            const rect = canvas.getBoundingClientRect();
-            return snapToStaff(e.clientX - rect.left, e.clientY - rect.top);
-        }
-
-        function appendPoint(snapped, withSound = true) {
-            if (!currentLine || currentLine.points.length >= MAX_POINTS_PER_LINE) return;
-            const lastPoint = currentLine.points[currentLine.points.length - 1];
-            if (lastPoint && lastPoint.x === snapped.x && lastPoint.y === snapped.y) return;
-            currentLine.points.push({ x: snapped.x, y: snapped.y, played: false });
-            if (withSound) triggerMusic(snapped.y, 0.32, 0.022);
-        }
-
-        function appendInterpolated(fromEvent, toEvent) {
-            const rect = canvas.getBoundingClientRect();
-            const x0 = fromEvent.clientX - rect.left;
-            const y0 = fromEvent.clientY - rect.top;
-            const x1 = toEvent.clientX - rect.left;
-            const y1 = toEvent.clientY - rect.top;
-            const distance = Math.hypot(x1 - x0, y1 - y0);
-            const steps = Math.max(1, Math.ceil(distance / 12));
-            for (let i = 1; i <= steps; i++) {
-                const t = i / steps;
-                appendPoint(snapToStaff(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t), i === steps);
-            }
-        }
-
-        let previousPointerEvent = null;
-
         canvas.addEventListener('pointerdown', (e) => {
             if (!started) return;
+            if (e.button !== 0) return;
             e.preventDefault();
+            canvas.setPointerCapture(e.pointerId);
             initAudio();
-            const snapped = pointFromEvent(e);
+            const rect = canvas.getBoundingClientRect();
+            const snapped = snapToStaff(e.clientX - rect.left, e.clientY - rect.top);
             if (!snapped) return;
             isDrawing = true;
             currentLine = { points: [{ x: snapped.x, y: snapped.y, played: false }] };
             lines.push(currentLine);
-            const retained = lines.filter(line => !line.releaseAt);
-            if (retained.length > MAX_LINES) retained[0].releaseAt = performance.now() + 2000;
-            if (lines.length > 12) lines.shift();
-            previousPointerEvent = e;
-            canvas.setPointerCapture?.(e.pointerId);
-            triggerMusic(snapped.y, 0.38, 0.028);
+            triggerMusic(snapped.y, 0.25, 0.1);
         });
 
         canvas.addEventListener('pointermove', (e) => {
             if (!isDrawing || !currentLine) return;
-            e.preventDefault();
-            const samples = e.getCoalescedEvents ? e.getCoalescedEvents() : [];
-            const events = samples.length ? samples : [e];
-            for (const sample of events) {
-                appendInterpolated(previousPointerEvent || sample, sample);
-                previousPointerEvent = sample;
-            }
+            const rect = canvas.getBoundingClientRect();
+            const snapped = snapToStaff(e.clientX - rect.left, e.clientY - rect.top);
+            if (!snapped) return;
+
+            const lastPoint = currentLine.points[currentLine.points.length - 1];
+            if (lastPoint.x === snapped.x && lastPoint.y === snapped.y) return;
+            const dist = Math.hypot(snapped.x - lastPoint.x, snapped.y - lastPoint.y);
+            if (dist < 20) return;
+
+            currentLine.points.push({ x: snapped.x, y: snapped.y, played: false });
+            triggerMusic(snapped.y, 0.2, 0.06);
         });
 
-        function endPointer(e) {
-            isDrawing = false; 
-            currentLine = null; 
-            previousPointerEvent = null;
-            if (e) canvas.releasePointerCapture?.(e.pointerId);
-        }
-        canvas.addEventListener('pointerup', endPointer);
-        canvas.addEventListener('pointercancel', endPointer);
+        window.addEventListener('pointerup', () => {
+            isDrawing = false;
+            currentLine = null;
+        });
+
+        canvas.addEventListener('pointercancel', () => {
+            isDrawing = false;
+            currentLine = null;
+        });
 
         function noteIndexFromY(yPos) {
             const layout = staffLayout();
@@ -565,48 +504,24 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
         function triggerMusic(yPos, duration = 0.9, volume = 0.12) {
             if (!audioCtx) return;
 
-            if (activeVoices.size >= 6) {
-                const oldest = activeVoices.values().next().value;
-                try { oldest.stop(); } catch (_) {}
-                activeVoices.delete(oldest);
-            }
-
             const freq = baseFreqs[noteIndexFromY(yPos)];
-            duration = Math.max(1.5, duration);
 
             const osc = audioCtx.createOscillator();
-            const air = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-            const airGain = audioCtx.createGain();
-            const filter = audioCtx.createBiquadFilter();
-            
+
             osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            air.type = 'sine';
-            air.frequency.setValueAtTime(freq * 4, audioCtx.currentTime);
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(2400, audioCtx.currentTime);
-            filter.Q.setValueAtTime(.35, audioCtx.currentTime);
-            
+
             const now = audioCtx.currentTime;
             gainNode.gain.setValueAtTime(0, now);
-            gainNode.gain.linearRampToValueAtTime(volume * .78, now + 0.008);
+            gainNode.gain.linearRampToValueAtTime(volume, now + 0.05);
             gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-            airGain.gain.setValueAtTime(0, now);
-            airGain.gain.linearRampToValueAtTime(volume * .25, now + .004);
-            airGain.gain.exponentialRampToValueAtTime(.0001, now + .18);
-            
-            osc.connect(gainNode).connect(filter);
-            air.connect(airGain).connect(filter);
-            filter.connect(audioCtx.destination);
-            
+
+            osc.connect(gainNode);
+            gainNode.connect(soundBus(audioCtx, 2.9));
+
             osc.start(now);
-            air.start(now);
             osc.stop(now + duration);
-            air.stop(now + duration);
-            const voice = { stop() { try { osc.stop(); } catch (_) {} try { air.stop(); } catch (_) {} } };
-            activeVoices.add(voice);
-            osc.addEventListener('ended', () => activeVoices.delete(voice), { once: true });
         }
 
         function drawGuide() {
@@ -619,8 +534,11 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
                 for (let col = 0; col < cols; col++) {
                     const x = startX + col * colGap;
                     const t = gridFade(x, y, layout);
-                    const a = 0.2 + t * 0.16;
-                    ctx.fillStyle = `rgba(69, 66, 126, ${a})`;
+                    const wr = 137 + (238 - 137) * t;
+                    const wg = 133 + (237 - 133) * t;
+                    const wb = 230 + (255 - 230) * t;
+                    const a = 0.66 - t * 0.54;
+                    ctx.fillStyle = `rgba(${wr}, ${wg}, ${wb}, ${a})`;
                     ctx.beginPath();
                     ctx.arc(x, y, 3.2, 0, Math.PI * 2);
                     ctx.fill();
@@ -632,59 +550,59 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
         function strokeLine(line) {
             ctx.beginPath();
             ctx.moveTo(line.points[0].x, line.points[0].y);
-            for (let j = 1; j < line.points.length - 1; j++) {
-                const point = line.points[j];
-                const next = line.points[j + 1];
-                ctx.quadraticCurveTo(point.x, point.y, (point.x + next.x) / 2, (point.y + next.y) / 2);
+            for (let j = 1; j < line.points.length; j++) {
+                ctx.lineTo(line.points[j].x, line.points[j].y);
             }
-            const last = line.points[line.points.length - 1];
-            if (last) ctx.lineTo(last.x, last.y);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.96)';
-            ctx.shadowColor = 'rgba(76, 71, 145, .32)';
-            ctx.shadowBlur = 8;
-            ctx.lineWidth = 1.8;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.92)';
+            ctx.lineWidth = 0.8;
             ctx.lineJoin = 'round';
             ctx.lineCap = 'round';
             ctx.stroke();
+            if (isPlaying) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(scanX - 35, 0, 70, canvas.height);
+                ctx.clip();
+                const glow = ctx.createLinearGradient(scanX - 35, 0, scanX + 35, 0);
+                glow.addColorStop(0, 'rgba(220,210,255,0)');
+                glow.addColorStop(.5, 'rgba(255,255,255,1)');
+                glow.addColorStop(1, 'rgba(220,210,255,0)');
+                ctx.beginPath();
+                line.points.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y));
+                ctx.strokeStyle = glow;
+                ctx.lineWidth = 3;
+                ctx.shadowColor = '#d1bfff';
+                ctx.shadowBlur = 14;
+                ctx.stroke();
+                ctx.restore();
+            }
         }
 
         function drawNote(pt) {
-            ctx.fillStyle = '#57549f';
-            ctx.shadowColor = 'rgba(255,255,255,.72)';
-            ctx.shadowBlur = 6;
+            ctx.fillStyle = '#9896f1';
             ctx.beginPath();
             ctx.arc(pt.x, pt.y, 4.2, 0, Math.PI * 2);
             ctx.fill();
         }
 
         function render() {
-            renderFrame = 0;
-            if (!renderActive) return;
-            const now = performance.now();
-            lines = lines.filter(line => !line.releaseAt || now < line.releaseAt + 650);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const signalCount = lines.reduce((total, line) => total + line.points.length, 0);
-            document.body.style.setProperty('--awake', String(Math.min(.48, .14 + signalCount * .0045)));
             drawGuide();
 
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i];
-                ctx.save();
-                ctx.globalAlpha = line.releaseAt ? Math.max(0, Math.min(1, (line.releaseAt + 650 - now) / 650)) : 1;
                 if (line.points.length > 1) strokeLine(line);
 
                 for (let j = 0; j < line.points.length; j++) {
                     drawNote(line.points[j]);
                 }
-                ctx.restore();
             }
 
             if (isPlaying) {
                 scanX += scanSpeed;
                 if (scanX > canvas.width) {
                     scanX = 0;
-                    isPlaying = false;
-                    playBtn.classList.remove('active');
+                    lines.forEach(line => line.points.forEach(p => p.played = false));
                 }
 
                 let grad = ctx.createLinearGradient(scanX - 25, 0, scanX + 25, 0);
@@ -701,29 +619,21 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
                         let pt = line.points[j];
                         if (!pt.played && Math.abs(pt.x - scanX) <= scanSpeed + 1.5) {
                             pt.played = true;
-                            triggerMusic(pt.y, 0.48, 0.055);
+                            triggerMusic(pt.y, 1.4, 0.18);
                         }
                     }
                 }
             }
 
-            renderFrame = requestAnimationFrame(render);
+            requestAnimationFrame(render);
         }
 
         render();
-
-        function resumeRender() {
-            if (renderActive && renderFrame) return;
-            renderActive = true;
-            renderFrame = requestAnimationFrame(render);
-        }
 
         function startPlay() {
             if (!started) return;
             initAudio();
             if (!isPlaying) {
-                scanX = 0;
-                lines.forEach(line => line.points.forEach(p => p.played = false));
                 isPlaying = true;
                 playBtn.classList.add('active');
             }
@@ -765,9 +675,6 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
         });
 
         window.stopUniverse = function () {
-            renderActive = false;
-            if (renderFrame) cancelAnimationFrame(renderFrame);
-            renderFrame = 0;
             started = false;
             document.body.classList.remove('is-on', 'is-playing');
             guideCopy?.classList.remove('is-gone');
@@ -775,19 +682,9 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
             scanX = 0;
             isDrawing = false;
             currentLine = null;
-            previousPointerEvent = null;
             playBtn.classList.remove('active');
-            lines = [];
-            document.body.style.setProperty('--awake', '.18');
-            bpm = 70;
-            tempoSlider.value = 70;
-            tempoValue.textContent = 70;
-            scanSpeed = (bpm / 60) * 1.8;
-            activeVoices.forEach((voice) => { try { voice.stop(); } catch (_) {} });
-            activeVoices.clear();
+            lines.forEach(line => line.points.forEach(p => p.played = false));
             if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawGuide();
         };
 
         window.startUniverse = function () {
@@ -795,7 +692,6 @@ body { background:linear-gradient(150deg,#faf9fc 8%,#e9e5f5 50%,#f4f0fa 72%,#dfd
                 document.body.classList.add('is-on');
             }
             resize();
-            resumeRender();
         };
 
         window.beginUniverse = beginUniverse;

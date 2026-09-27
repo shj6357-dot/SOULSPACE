@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>잡념 비우기</title>
-    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./fonts/fonts.css" />
     <style>
+      :root {
+        --font-en: "Butler Stencil", "Noto Serif KR", Georgia, serif;
+        --font-ko: "Noto Serif KR", "Butler Stencil", Georgia, serif;
+      }
+
         * { box-sizing: border-box; }
         html, body { height: 100%; }
         body {
@@ -18,27 +22,8 @@
             align-items: center;
             height: 100vh;
             background: #f5faf2;
-            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            font-family: var(--font-ko);
             overflow: hidden;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            inset: -18%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: .72;
-            background:
-                repeating-radial-gradient(ellipse at 50% 46%, transparent 0 72px, rgba(79,128,94,.055) 73px 74px, transparent 75px 138px),
-                conic-gradient(from 218deg at 50% 46%, transparent 0 20%, rgba(171,214,173,.14) 27%, transparent 38% 62%, rgba(112,170,131,.09) 72%, transparent 84%);
-            filter: blur(1px);
-            animation: mindCurrent 24s ease-in-out infinite alternate;
-        }
-
-        @keyframes mindCurrent {
-            0% { transform: translate3d(-1.5%, 1%, 0) rotate(-1deg) scale(.98); }
-            100% { transform: translate3d(1.5%, -1%, 0) rotate(1deg) scale(1.04); }
         }
 
         body::before {
@@ -47,18 +32,18 @@
             left: 50%;
             top: 50%;
             z-index: 0;
-            width: min(42vmin, 24.5rem);
+            width: min(168vmin, 88rem);
             aspect-ratio: 1;
             border-radius: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(0.25);
             pointer-events: none;
-            filter: blur(10px);
+            will-change: transform;
             background: radial-gradient(
                 circle at 50% 50%,
                 #a8d98c 0%,
-                rgba(168, 217, 140, 0.78) 38%,
-                rgba(200, 232, 180, 0.28) 64%,
-                transparent 78%
+                rgba(168, 217, 140, 0.78) 30%,
+                rgba(200, 232, 180, 0.28) 55%,
+                transparent 74%
             );
         }
 
@@ -68,12 +53,10 @@
 
         @keyframes orbGrow {
             0% {
-                width: min(42vmin, 24.5rem);
-                filter: blur(10px);
+                transform: translate(-50%, -50%) scale(0.25);
             }
             100% {
-                width: min(168vmin, 88rem);
-                filter: blur(64px);
+                transform: translate(-50%, -50%) scale(1);
             }
         }
 
@@ -85,80 +68,58 @@
             width: min(420px, 100%);
             z-index: 10;
             position: relative;
+            margin-bottom: 26px;
             filter: saturate(1.08) contrast(1.08);
         }
 
         .input-row {
             display: flex;
-            align-items: center;
-            gap: 14px;
+            align-items: flex-end;
+            gap: 16px;
             width: 100%;
-            padding: 10px 12px 10px 18px;
-            border: 1px solid rgba(58, 104, 77, 0.24);
-            border-radius: 18px;
-            background: rgba(250, 253, 249, 0.72);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.86),
-                0 12px 32px rgba(75, 116, 88, 0.13);
-            backdrop-filter: blur(14px) saturate(0.92);
-            -webkit-backdrop-filter: blur(14px) saturate(0.92);
-            transition: border-color 0.28s ease, background 0.28s ease, box-shadow 0.28s ease;
-        }
-
-        .input-row:focus-within {
-            border-color: rgba(48, 103, 70, 0.46);
-            background: rgba(252, 254, 251, 0.86);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.94),
-                0 14px 38px rgba(69, 117, 83, 0.18),
-                0 0 0 3px rgba(137, 188, 148, 0.12);
         }
 
         .input-row input[type="text"] {
             flex: 1;
             min-width: 0;
-            padding: 5px 0 6px;
-            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
-            font-size: 42px;
+            padding: 6px 0 8px;
+            font-family: var(--font-ko);
+            font-size: 32px;
             line-height: 1.2;
             border: none;
-            border-bottom: 1px solid rgba(55, 99, 72, 0.36);
-            text-shadow: none;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.92);
+            text-shadow: 0 1px 10px rgba(44, 54, 64, 0.18);
             border-radius: 0;
             background: transparent;
             box-shadow: none;
             outline: none;
-            color: #315446;
-            caret-color: #315446;
+            color: #ffffff;
         }
 
         .input-row input[type="text"]::placeholder {
-            color: rgba(49, 84, 70, 0.62);
+            color: rgba(255, 255, 255, 0.78);
             font-size: 15px;
             line-height: 2.1;
         }
 
         .input-row button {
-            padding: 8px 10px;
+            padding: 0 0 8px;
             border: none;
             border-radius: 0;
             background: none;
-            color: #315446;
-            font-family: Pretendard, "Apple SD Gothic Neo", sans-serif;
+            color: #ffffff;
+            font-family: var(--font-ko);
             font-size: 15px;
             font-weight: 600;
             font-style: normal;
             letter-spacing: -0.02em;
             cursor: pointer;
             white-space: nowrap;
-            border-radius: 999px;
-            background: rgba(105, 157, 120, 0.12);
-            box-shadow: inset 0 0 0 1px rgba(66, 112, 80, 0.12);
+            box-shadow: none;
         }
 
         .input-row button:hover {
-            opacity: 1;
-            background: rgba(105, 157, 120, 0.2);
+            opacity: 0.65;
         }
 
         .custom-card {
@@ -182,7 +143,7 @@
             border: none;
             padding: 0;
             cursor: pointer;
-            font-family: Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            font-family: var(--font-ko);
             font-size: 0.82rem;
             font-weight: 500;
             letter-spacing: -0.02em;
@@ -244,9 +205,9 @@
             background: rgba(255, 255, 255, 0.58);
         }
 
-        .weight-dot[data-size="30"] { width: 0.34rem; height: 0.34rem; }
-        .weight-dot[data-size="42"] { width: 0.48rem; height: 0.48rem; }
-        .weight-dot[data-size="56"] { width: 0.66rem; height: 0.66rem; }
+        .weight-dot[data-size="22"] { width: 0.34rem; height: 0.34rem; }
+        .weight-dot[data-size="32"] { width: 0.48rem; height: 0.48rem; }
+        .weight-dot[data-size="48"] { width: 0.66rem; height: 0.66rem; }
 
         .weight-dot:hover,
         .weight-dot.is-on {
@@ -265,27 +226,6 @@
             align-items: center;
         }
 
-        .stage::before,
-        .stage::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 42%;
-            width: min(72vw, 820px);
-            height: min(42vw, 430px);
-            border: 1px solid rgba(69,116,84,.08);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotate(-7deg);
-            box-shadow: inset 0 0 90px rgba(143,195,149,.055);
-        }
-
-        .stage::after {
-            width: min(54vw, 620px);
-            height: min(31vw, 320px);
-            transform: translate(-50%, -50%) rotate(8deg);
-            opacity: .72;
-        }
-
         /* 1. 흘려보내기 */
         .anim-fade-flow,
         .anim-noise,
@@ -298,39 +238,35 @@
         }
 
         .anim-fade-flow {
-            animation: flowAway 6.2s cubic-bezier(0.22, 0.62, 0.28, 1) forwards;
-            text-shadow: 0 1px 12px rgba(255,255,255,.84), 0 10px 34px currentColor;
+            animation: flowAway 5.4s ease-out forwards;
         }
-        .anim-fade-flow::after {
-            content: attr(data-echo);
+        .anim-fade-flow::before {
+            content: '';
             position: absolute;
-            inset: 0;
-            opacity: .18;
-            filter: blur(5px);
-            transform: translate(-18px, 16px) scaleX(1.12);
-            animation: echoCurrent 6.2s ease-out forwards;
+            inset: -65% -25%;
+            z-index: -1;
+            background: radial-gradient(ellipse, rgba(255,255,255,.95), rgba(247,255,231,.45) 35%, transparent 70%);
+            filter: blur(12px);
+            animation: lightBloom 5.4s ease-out forwards;
         }
         @keyframes flowAway {
-            0%, 24% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); letter-spacing: -.02em; }
-            58% { opacity: .72; filter: blur(1.3px); letter-spacing: .05em; }
-            100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 180px)), calc(-50% + var(--dy, -150px))) scale(.5, .82) rotate(var(--rot, 10deg)); filter: blur(11px); letter-spacing: .22em; }
+            0%, 18% { opacity: 1; transform: translate(-50%, -50%); filter: blur(0); text-shadow: none; }
+            42% { opacity: 1; color: #fff; filter: blur(.3px); text-shadow: 0 0 5px #fff, 0 0 16px #fff, 0 0 34px #f5ffdf; }
+            65% { opacity: .95; color: #fff; transform: translate(-50%, calc(-50% - 10px)) scale(1.06); filter: blur(2px); text-shadow: 0 0 12px #fff, 0 0 32px #fff, 0 0 60px #f5ffdf; }
+            100% { opacity: 0; color: #fff; transform: translate(-50%, calc(-50% - 32px)) scale(1.16); filter: blur(10px); text-shadow: 0 0 32px #fff; }
         }
-        @keyframes echoCurrent {
-            0%, 24% { opacity: .16; transform: translate(-18px, 16px) scaleX(1.12); }
-            100% { opacity: 0; transform: translate(calc(var(--dx, 180px) * .42), calc(var(--dy, -150px) * .34)) scaleX(1.8); filter: blur(12px); }
+        @keyframes lightBloom {
+            0%, 18% { opacity: 0; transform: scale(.5); }
+            48% { opacity: .85; transform: scale(1); }
+            70% { opacity: .6; transform: scale(1.35); }
+            100% { opacity: 0; transform: scale(1.6); }
         }
-
-        /* 2. 노이징 지우기 */
-        .anim-noise {
-            animation: noiseGlitch 5.8s ease-in-out forwards;
+        .anim-noise { image-rendering: pixelated; }
+        @media (prefers-reduced-motion: reduce) {
+            .anim-fade-flow { animation: quietErase 1.2s ease-out forwards; }
+            .anim-fade-flow::before { display: none; }
         }
-        @keyframes noiseGlitch {
-            0%, 32% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: none; text-shadow: none; }
-            48% { opacity: 0.88; transform: translate(calc(-50% - 3px), calc(-50% + 2px)) skewX(6deg); filter: contrast(180%) blur(0.6px); text-shadow: 1px 0 rgba(255,80,80,0.45), -1px 0 rgba(80,80,255,0.4); }
-            66% { opacity: 0.58; transform: translate(calc(-50% + 3px), calc(-50% - 2px)) skewX(-8deg); filter: contrast(220%) blur(2px); text-shadow: -2px 0 rgba(160,255,140,0.4), 2px 0 rgba(255,80,220,0.35); }
-            84% { opacity: 0.28; transform: translate(calc(-50% - 4px), calc(-50% + 1px)) scale(0.94); filter: blur(5px); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.86); filter: blur(12px); }
-        }
+        @keyframes quietErase { to { opacity: 0; } }
 
         /* 3. 깨뜨리기 */
         .play-layer {
@@ -342,14 +278,12 @@
             justify-content: flex-end;
             align-items: center;
             padding: 0 28px 68px;
-            filter: blur(3.5px);
             opacity: 0.72;
             pointer-events: none;
-            transition: filter 0.9s ease, opacity 0.9s ease;
+            transition: opacity 0.9s ease;
         }
 
         body.is-playing .play-layer {
-            filter: blur(0);
             opacity: 1;
             pointer-events: auto;
         }
@@ -387,7 +321,7 @@
         }
 
         .guide-start b {
-            font-family: Montserrat, "Helvetica Neue", sans-serif;
+            font-family: var(--font-en);
             font-weight: 700;
         }
 
@@ -406,170 +340,201 @@
             100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.35); filter: blur(4px); }
         }
 
-        /* S — 입력 도구와 선택 옵션을 배경에서 또렷하게 분리 */
-        body {
-            background:
-                radial-gradient(ellipse 62% 52% at 50% 42%, rgba(181,222,168,.28), transparent 72%),
-                linear-gradient(180deg, #f8fbf6 0%, #edf5ea 100%);
-        }
-
-        .play-layer {
-            padding: 0 clamp(24px, 4vw, 64px) clamp(44px, 7vh, 78px);
-        }
-
-        .ui-wrapper {
-            width: min(540px, 92vw);
-            gap: 14px;
-        }
-
-        .interaction-caption {
+        .pill-world {
             position: fixed;
-            left: 50%;
-            top: clamp(4.8rem, 10vh, 7rem);
-            z-index: 12;
-            width: min(38rem, 86vw);
-            margin: 0;
-            transform: translateX(-50%);
-            color: #345c46;
-            font-size: clamp(.88rem, 1.1vw, 1rem);
-            font-weight: 500;
-            line-height: 1.7;
-            letter-spacing: -.02em;
-            text-align: center;
-            text-shadow: 0 1px 12px rgba(255,255,255,.9);
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        .input-row {
-            padding: 13px 15px 13px 20px;
-            border-color: rgba(45,91,63,.34);
-            background: rgba(249,252,248,.9);
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,.96),
-                0 16px 44px rgba(59,103,72,.14),
-                0 0 0 1px rgba(255,255,255,.42);
+        .liquid-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
         }
+
+        .liquid-text {
+            position: absolute;
+            left: 0;
+            top: 0;
+            white-space: nowrap;
+            font-family: var(--font-ko);
+            font-size: clamp(14px, 1.15vw, 18px);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #2f6214;
+            pointer-events: none;
+            will-change: transform, filter, opacity;
+            transform-origin: 50% 50%;
+        }
+
+        .liquid-text.is-melting {
+            transition: filter 1.5s ease, opacity 1.5s ease;
+            filter: blur(7px);
+            opacity: 0;
+        }
+
+        #meltBtn[hidden],
+        #clearBtn[hidden] { display: none; }
 
         .input-row input[type="text"] {
-            border-bottom-color: rgba(48,88,62,.46);
-            color: #274b39;
-            caret-color: #274b39;
+            font-size: 17px !important;
+            line-height: 1.5;
+            color: #3f7d24 !important;
+            border-bottom: 1.5px solid rgba(63, 125, 36, 0.55);
+            text-shadow: none;
         }
 
-        .input-row input[type="text"]::placeholder { color: rgba(39,75,57,.66); }
+        .input-row input[type="text"]::placeholder {
+            font-size: 17px;
+            line-height: 1.5;
+            color: rgba(63, 125, 36, 0.62);
+        }
 
         .input-row button {
-            padding: .62rem .9rem;
-            color: #264c39;
-            background: rgba(119,171,128,.16);
-            box-shadow: inset 0 0 0 1px rgba(55,103,70,.18);
+            font-size: 17px;
+            font-weight: 500;
+            color: #3f7d24;
         }
 
-        .custom-card {
-            padding: .9rem 1.1rem .85rem;
-            border-top: 1px solid rgba(48,88,62,.18);
-            border-bottom: 1px solid rgba(255,255,255,.66);
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,.28) 18%, rgba(255,255,255,.28) 82%, transparent);
+        .liquid-text {
+            opacity: 0.82;
         }
 
-        .mode-btn,
-        .mode-btn:hover {
-            color: rgba(42,78,58,.62);
-        }
-
-        .mode-btn.active {
-            color: #284f3b;
-            text-decoration-color: rgba(40,79,59,.5);
-        }
-
-        .tone-dot {
-            box-shadow: inset 0 0 0 1px rgba(39,73,54,.26), 0 2px 6px rgba(46,78,58,.1);
-        }
-
-        .tone-dot:hover,
-        .tone-dot.is-on {
-            box-shadow: inset 0 0 0 1px rgba(35,68,49,.5), 0 0 0 3px rgba(255,255,255,.5);
-        }
-
-        .weight-dot { background: rgba(43,79,59,.42); }
+        .mode-btn { color: rgba(63, 125, 36, 0.55); }
+        .mode-btn:hover { color: rgba(63, 125, 36, 0.8); }
+        .mode-btn.active { color: #3f7d24; }
+        .weight-dot { background: rgba(63, 125, 36, 0.35); }
         .weight-dot:hover,
-        .weight-dot.is-on { background: #315d46; }
+        .weight-dot.is-on { background: #3f7d24; }
+        .style-controls { justify-content: center; }
 
-        @media (max-height: 680px) {
-            .interaction-caption { top: 4.2rem; }
-            .play-layer { padding-bottom: 28px; }
+        .mode-btn { font-size: calc(0.82rem * 1.2) !important; padding: 0.2em 0.1em; }
+
+        .guide-copy {
+            width: auto;
+            max-width: 96vw;
         }
-body { background:linear-gradient(145deg,#f7faf5 10%,#e2efdf 50%,#f2f7ed 74%,#e0ebe1); }
-    body::before,body.is-on::before { display:none; }
-    body::after { background:linear-gradient(125deg,transparent 25%,rgba(255,255,255,.8) 42%,transparent 58%,rgba(121,163,136,.15) 77%,transparent 90%); filter:blur(32px); opacity:.8; }
-    @media(max-width:1024px) {
-      body { height:100svh; }
-      .play-layer { padding:0 16px max(20px,env(safe-area-inset-bottom)); }
-      .ui-wrapper { width:100%; max-width:540px; gap:12px; }
-      .input-row { padding:10px 12px; gap:8px; }
-      .input-row input[type="text"] { font-size:24px; }
-      .input-row input[type="text"]::placeholder { font-size:13px; }
-      .input-row button,.mode-btn { min-height:44px; }
-      .interaction-caption { top:5rem; font-size:.84rem; }
-    }
-    @media(max-width:767px) {
-      body::after { filter:blur(14px); opacity:.5; }
-      .interaction-caption { top:4.65rem; width:84vw; font-size:.8rem; line-height:1.5; }
-      .play-layer { padding-inline:14px; }
-      .ui-wrapper { gap:9px; }
-      .input-row { padding:8px 10px; }
-      .input-row input[type="text"] { font-size:21px; }
-      .custom-card { padding:9px 10px; }
-    }
-  </style>
+
+        .guide-copy p:first-child {
+            white-space: nowrap;
+        }
+
+        .key-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.2em;
+            height: 1.55em;
+            margin: 0 0.2em;
+            padding: 0 0.45em;
+            border: 1.5px solid currentColor;
+            border-radius: 0.4em;
+            font-family: var(--font-en);
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        .key-icon.is-space {
+            min-width: 3.4em;
+            padding-top: 0.15em;
+        }
+
+        .guide-copy {
+            width: max-content !important;
+            max-width: 96vw;
+            text-align: center !important;
+        }
+
+        .guide-copy {
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+        }
+
+        .guide-copy.is-gone {
+            transform: translate(-50%, calc(-50% - 14px)) !important;
+        }
+
+        .key-icon {
+            vertical-align: middle;
+            position: relative;
+            top: -0.1em;
+        }
+      body { -webkit-user-select: none; user-select: none; }
+  input, textarea { -webkit-user-select: text; user-select: text; }
+        @media (max-width: 600px) {
+            body { height:100dvh; }
+            .guide-copy { width:88vw !important; }
+            .guide-copy p:first-child { white-space:normal; word-break:keep-all; }
+            .input-row button, .mode-btn { min-height:44px; }
+        }
+</style>
+    <link rel="stylesheet" href="./fonts/butler-stencil/butler-stencil.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&display=swap" />
 </head>
 <body>
+
+    <div class="pill-world" id="pillWorld">
+        <canvas class="liquid-canvas" id="liquidCanvas"></canvas>
+        <div class="pill-layer" id="pillLayer"></div>
+    </div>
 
     <div class="play-layer">
     <div class="stage" id="stage"></div>
 
-    <p class="interaction-caption">지금 맴도는 생각을 적고 Enter를 눌러, 화면 너머로 흘려보내세요.</p>
-
     <div class="ui-wrapper">
         <!-- 박스 밖으로 분리된 입력창 & 버튼 -->
         <div class="input-row">
-            <input type="text" id="thoughtInput" placeholder="비우고 싶은 생각을 적으세요" autocomplete="off">
+            <input type="text" id="thoughtInput" placeholder="비우고 싶은 생각을 적고 ↵" autocomplete="off">
             <button id="clearBtn">비우기</button>
+            <button id="meltBtn" type="button" hidden>녹이기</button>
         </div>
 
         <!-- 커스터마이징만 담긴 흰 박스 -->
         <div class="custom-card">
             <div class="mode-icons">
-                <button type="button" class="mode-btn active" data-mode="flow">흐르기</button>
-                <button type="button" class="mode-btn" data-mode="noise">흐리기</button>
-                <button type="button" class="mode-btn" data-mode="break">흩어지기</button>
+                <button type="button" class="mode-btn active" data-mode="melt">액체</button>
+                <button type="button" class="mode-btn" data-mode="flow">빛</button>
+                <button type="button" class="mode-btn" data-mode="noise">노이즈</button>
+                <button type="button" class="mode-btn" data-mode="break">조각</button>
             </div>
 
             <div class="style-controls">
-                <div class="tone-dots" id="toneDots">
-                    <button type="button" class="tone-dot" data-color="#ffffff" style="background:#ffffff" aria-label="하얀 빛"></button>
-                    <button type="button" class="tone-dot" data-color="#e8f5dc" style="background:#e8f5dc" aria-label="옅은 결"></button>
-                    <button type="button" class="tone-dot is-on" data-color="#a8d98c" style="background:#a8d98c" aria-label="초록 결"></button>
-                    <button type="button" class="tone-dot" data-color="#7cc5e4" style="background:#7cc5e4" aria-label="푸른 결"></button>
-                    <button type="button" class="tone-dot" data-color="#9896f1" style="background:#9896f1" aria-label="보라 결"></button>
-                    <button type="button" class="tone-dot" data-color="#f59580" style="background:#f59580" aria-label="코랄 결"></button>
-                    <button type="button" class="tone-dot" data-color="#f0d56e" style="background:#f0d56e" aria-label="노란 결"></button>
-                    <button type="button" class="tone-dot" data-color="#2c3640" style="background:#2c3640" aria-label="먹빛"></button>
-                </div>
                 <div class="weight-dots" id="weightDots">
-                    <button type="button" class="weight-dot" data-size="30" aria-label="작게"></button>
-                    <button type="button" class="weight-dot is-on" data-size="42" aria-label="보통"></button>
-                    <button type="button" class="weight-dot" data-size="56" aria-label="크게"></button>
+                    <button type="button" class="weight-dot" data-size="22" aria-label="작게"></button>
+                    <button type="button" class="weight-dot is-on" data-size="32" aria-label="보통"></button>
+                    <button type="button" class="weight-dot" data-size="48" aria-label="크게"></button>
                 </div>
             </div>
         </div>
     </div>
     </div>
     <div class="guide-copy" id="guideCopy">
-        <p>지금 비워내고 싶은 생각을 적으면 빛과 결로 멀어집니다.</p>
-        <p class="guide-start"><b>Space</b> 를 누르면 시작됩니다.</p>
+        <p>지금 비워내고 싶은 생각을 적어 빛으로, 노이즈로, 조각으로 사라지거나, 유리에 담겨 스르륵 녹아내립니다.</p>
     </div>
 
     <script>
+        function soundBus(ctx, trim) {
+            if (ctx.__bus) return ctx.__bus;
+            const input = ctx.createGain();
+            input.gain.value = trim;
+            const limit = ctx.createDynamicsCompressor();
+            limit.threshold.value = -20;
+            limit.knee.value = 6;
+            limit.ratio.value = 20;
+            limit.attack.value = 0.002;
+            limit.release.value = 0.15;
+            const level = ctx.createGain();
+            level.gain.value = 1.4;
+            input.connect(limit).connect(level).connect(ctx.destination);
+            ctx.__bus = input;
+            return input;
+        }
+
         const input = document.getElementById('thoughtInput');
         const btn = document.getElementById('clearBtn');
         const stage = document.getElementById('stage');
@@ -578,13 +543,18 @@ body { background:linear-gradient(145deg,#f7faf5 10%,#e2efdf 50%,#f2f7ed 74%,#e0
         const weightDots = document.querySelectorAll('.weight-dot');
 
         let currentMode = 'flow';
-        let currentColor = '#a8d98c';
-        let currentSize = 42;
+        let currentColor = '#3f7d24';
+        let currentSize = 32;
         let started = false;
         let lastSlot = -1;
-        let isComposing = false;
-        let lastSubmitAt = 0;
         const guideCopy = document.getElementById('guideCopy');
+        const meltBtn = document.getElementById('meltBtn');
+        const pillLayer = document.getElementById('pillLayer');
+        const uiWrapper = document.querySelector('.ui-wrapper');
+        const canvas = document.getElementById('liquidCanvas');
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const liquidColor = () => '#4a8a2c';
+        const liquidFont = () => `${Math.round(Math.max(14, currentSize * 0.56))}px`;
         const thoughtSlots = [
             { x: 22, y: 20 },
             { x: 50, y: 16 },
@@ -598,12 +568,596 @@ body { background:linear-gradient(145deg,#f7faf5 10%,#e2efdf 50%,#f2f7ed 74%,#e0
             { x: 60, y: 58 },
         ];
 
-        const paletteOverrides = ['#496b5d', '#668f76', '#a8d98c', '#7cc5e4', '#9896f1', '#f59580', '#a66f2f', '#2c3640'];
-        toneDots.forEach((dot, index) => {
-            if (!paletteOverrides[index]) return;
-            dot.dataset.color = paletteOverrides[index];
-            dot.style.background = paletteOverrides[index];
-        });
+        const MAXP = 9000;
+        const R = 6;
+        const GRAV = 2100;
+        const SUB = 3;
+        const MAX_PILLS = 22;
+        const PX = new Float32Array(MAXP), PY = new Float32Array(MAXP);
+        const OX = new Float32Array(MAXP), OY = new Float32Array(MAXP);
+        const RX = new Float32Array(MAXP), RY = new Float32Array(MAXP);
+        const RAD = new Float32Array(MAXP);
+        const RND = new Float32Array(MAXP);
+        const LIFE = new Float64Array(MAXP);
+        const GRP = new Int32Array(MAXP).fill(-1);
+        const LIQ = new Uint8Array(MAXP);
+        const ALIVE = new Uint8Array(MAXP);
+        const free = [];
+        let high = 0;
+        let W = 0, H = 0, FLOOR = 0;
+        const pills = [];
+        let pillSeq = 0;
+
+        const jelly = (() => {
+            let ctx = null, out = null, lastBlop = 0, lastPop = 0;
+            function wake() {
+                if (!ctx) {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (!AC) return null;
+                    ctx = new AC();
+                    const lp = ctx.createBiquadFilter();
+                    lp.type = 'lowpass';
+                    lp.frequency.value = 2600;
+                    out = ctx.createGain();
+                    out.gain.value = 0.7;
+                    out.connect(lp).connect(soundBus(ctx, 1));
+                }
+                if (ctx.state === 'suspended') ctx.resume();
+                return ctx;
+            }
+            ['pointerdown', 'keydown'].forEach((type) => window.addEventListener(type, wake, { passive: true }));
+            function blop(force) {
+                if (!ctx || ctx.state !== 'running') return;
+                const now = ctx.currentTime;
+                if (now - lastBlop < 0.07) return;
+                lastBlop = now;
+                const k = Math.max(0.25, Math.min(1, force));
+                const base = 150 + Math.random() * 60;
+                const osc = ctx.createOscillator();
+                const wob = ctx.createOscillator();
+                const wobAmt = ctx.createGain();
+                const amp = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(base * 1.9, now);
+                osc.frequency.exponentialRampToValueAtTime(base, now + 0.06);
+                osc.frequency.exponentialRampToValueAtTime(base * 0.72, now + 0.42);
+                wob.frequency.value = 11 + Math.random() * 5;
+                wobAmt.gain.setValueAtTime(base * 0.16, now);
+                wobAmt.gain.exponentialRampToValueAtTime(1, now + 0.45);
+                wob.connect(wobAmt).connect(osc.frequency);
+                amp.gain.setValueAtTime(0.0001, now);
+                amp.gain.exponentialRampToValueAtTime(0.5 * k, now + 0.012);
+                amp.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
+                osc.connect(amp).connect(out);
+                osc.start(now); wob.start(now);
+                osc.stop(now + 0.5); wob.stop(now + 0.5);
+            }
+            function pop(level) {
+                if (!ctx || ctx.state !== 'running') return;
+                const now = ctx.currentTime;
+                if (now - lastPop < 0.035) return;
+                lastPop = now;
+                const f = 380 + Math.random() * 520;
+                const osc = ctx.createOscillator();
+                const amp = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(f, now);
+                osc.frequency.exponentialRampToValueAtTime(f * 2.3, now + 0.05);
+                amp.gain.setValueAtTime(0.0001, now);
+                amp.gain.exponentialRampToValueAtTime(0.16 * (level || 1), now + 0.006);
+                amp.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+                osc.connect(amp).connect(out);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            }
+            function bubble(ms, level) {
+                const end = performance.now() + ms;
+                const tick = () => {
+                    if (performance.now() > end) return;
+                    pop(level);
+                    setTimeout(tick, 45 + Math.random() * 120);
+                };
+                tick();
+            }
+            return { blop, bubble };
+        })();
+
+        function alloc() {
+            if (free.length) return free.pop();
+            if (high < MAXP) return high++;
+            return -1;
+        }
+        function kill(i) {
+            ALIVE[i] = 0;
+            GRP[i] = -1;
+            LIQ[i] = 0;
+            LIFE[i] = 0;
+            free.push(i);
+        }
+
+        function measure() {
+            W = window.innerWidth;
+            H = window.innerHeight;
+            const r = uiWrapper.getBoundingClientRect();
+            FLOOR = (r.top || H) - 18;
+            resizeGL();
+        }
+
+        function dropPill(text) {
+            const label = document.createElement('div');
+            label.className = 'liquid-text';
+            label.textContent = text;
+            label.style.color = liquidColor();
+            label.style.fontSize = liquidFont();
+            pillLayer.appendChild(label);
+            const tw = label.offsetWidth;
+            const th = label.offsetHeight;
+            const h = 48;
+            const w = Math.min(Math.max(tw + 48, 120), W * 0.7);
+            const cx = W * (0.3 + Math.random() * 0.4);
+            let top = 0;
+            pills.forEach((q) => {
+                if (q.meltT0) return;
+                for (const i of q.idx) {
+                    if (ALIVE[i] && PY[i] - R < top) top = PY[i] - R;
+                }
+            });
+            const cy = Math.min(-h / 2 - 20, top - h / 2 - 24);
+            const ang = (Math.random() - 0.5) * 0.5;
+            const ca = Math.cos(ang), sa = Math.sin(ang);
+            const idx = [];
+            const seg = w / 2 - h / 2;
+            const step = R * 2;
+            for (let gy = -h / 2 + R; gy <= h / 2 - R + 0.01; gy += step * 0.9) {
+                for (let gx = -w / 2 + R; gx <= w / 2 - R + 0.01; gx += step * 0.9) {
+                    const q = Math.max(-seg, Math.min(seg, gx));
+                    if (Math.hypot(gx - q, gy) > h / 2 - R * 0.4) continue;
+                    const i = alloc();
+                    if (i < 0) break;
+                    ALIVE[i] = 1; LIQ[i] = 0; LIFE[i] = 0; RAD[i] = R; RND[i] = Math.random();
+                    RX[i] = gx; RY[i] = gy;
+                    PX[i] = OX[i] = cx + ca * gx - sa * gy;
+                    PY[i] = OY[i] = cy + sa * gx + ca * gy;
+                    idx.push(i);
+                }
+            }
+            let mx = 0, my = 0;
+            idx.forEach((i) => { mx += RX[i]; my += RY[i]; });
+            mx /= idx.length; my /= idx.length;
+            const id = pillSeq++;
+            idx.forEach((i) => { RX[i] -= mx; RY[i] -= my; GRP[i] = id; });
+            const pill = { id, idx, label, tw, th, stiff: 0.55, meltT0: 0, cx, cy, ang, impacted: false };
+            pills.push(pill);
+            const solid = pills.filter((p) => !p.meltT0);
+            if (solid.length > MAX_PILLS) melt(solid[0], 0, true);
+        }
+
+        function melt(p, delay, quiet) {
+            if (p.meltT0 || p.meltQueued) return;
+            p.meltQueued = true;
+            setTimeout(() => {
+                p.meltT0 = performance.now();
+                p.label.classList.add('is-melting');
+                if (!quiet) jelly.bubble(1500, 0.8);
+            }, delay);
+        }
+
+        const CELL = R * 2 + 2;
+        const OFFY = 2400;
+        let GW = 1, GH = 1;
+        let head = new Int32Array(1);
+        const next = new Int32Array(MAXP);
+        function buildHash() {
+            GW = Math.ceil(W / CELL) + 2;
+            GH = Math.ceil((H + OFFY) / CELL) + 2;
+            if (head.length !== GW * GH) head = new Int32Array(GW * GH);
+            head.fill(-1);
+            for (let i = 0; i < high; i += 1) {
+                if (!ALIVE[i]) continue;
+                const gx = Math.max(0, Math.min(GW - 1, ((PX[i] / CELL) | 0) + 1));
+                const gy = Math.max(0, Math.min(GH - 1, (((PY[i] + OFFY) / CELL) | 0) + 1));
+                const c = gy * GW + gx;
+                next[i] = head[c];
+                head[c] = i;
+            }
+        }
+
+        function solveCollisions() {
+            buildHash();
+            for (let i = 0; i < high; i += 1) {
+                if (!ALIVE[i]) continue;
+                const gx = Math.max(0, Math.min(GW - 1, ((PX[i] / CELL) | 0) + 1));
+                const gy = Math.max(0, Math.min(GH - 1, (((PY[i] + OFFY) / CELL) | 0) + 1));
+                for (let oy = -1; oy <= 1; oy += 1) {
+                    const yy = gy + oy;
+                    if (yy < 0 || yy >= GH) continue;
+                    for (let ox = -1; ox <= 1; ox += 1) {
+                        const xx = gx + ox;
+                        if (xx < 0 || xx >= GW) continue;
+                        for (let j = head[yy * GW + xx]; j !== -1; j = next[j]) {
+                            if (j <= i) continue;
+                            const sameSolid = GRP[i] !== -1 && GRP[i] === GRP[j] && !LIQ[i] && !LIQ[j];
+                            if (sameSolid) continue;
+                            const dx = PX[j] - PX[i];
+                            const dy = PY[j] - PY[i];
+                            const d2 = dx * dx + dy * dy;
+                            const minD = RAD[i] + RAD[j];
+                            if (d2 < minD * minD && d2 > 1e-6) {
+                                const d = Math.sqrt(d2);
+                                const corr = Math.min(minD - d, R * 0.6) * 0.5;
+                                const nx = dx / d, ny = dy / d;
+                                PX[i] -= nx * corr; PY[i] -= ny * corr;
+                                PX[j] += nx * corr; PY[j] += ny * corr;
+                            } else if (LIQ[i] && LIQ[j] && d2 < (minD + R * 1.3) * (minD + R * 1.3) && d2 > 1e-6) {
+                                const d = Math.sqrt(d2);
+                                const pull = ((d - minD) / d) * 0.035;
+                                PX[i] += dx * pull; PY[i] += dy * pull;
+                                PX[j] -= dx * pull; PY[j] -= dy * pull;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function bounds() {
+            for (let i = 0; i < high; i += 1) {
+                if (!ALIVE[i]) continue;
+                const r = RAD[i];
+                if (PX[i] < r) { PX[i] = r; }
+                if (PX[i] > W - r) { PX[i] = W - r; }
+                if (PY[i] > FLOOR - r) {
+                    PY[i] = FLOOR - r;
+                    const fr = LIQ[i] ? 0.06 : 0.4;
+                    OX[i] = PX[i] - (PX[i] - OX[i]) * (1 - fr);
+                    if (OY[i] < PY[i]) OY[i] = PY[i] - (PY[i] - OY[i]) * 0.2;
+                }
+            }
+        }
+
+        function shapeMatch(now) {
+            for (let k = pills.length - 1; k >= 0; k -= 1) {
+                const p = pills[k];
+                let stiff = p.stiff;
+                if (p.meltT0) {
+                    const t = (now - p.meltT0) / 1000;
+                    stiff = p.stiff * Math.max(0, 1 - t / 1.3);
+                    p.idx.forEach((i) => { if (ALIVE[i] && !LIQ[i] && RND[i] < t / 1.2) LIQ[i] = 1; });
+                    if (t > 1.45) {
+                        p.idx.forEach((i) => {
+                            if (!ALIVE[i]) return;
+                            LIQ[i] = 1;
+                            GRP[i] = -1;
+                            LIFE[i] = now + 1600 + RND[i] * 2600;
+                        });
+                        const label = p.label;
+                        setTimeout(() => label.remove(), 1800);
+                        pills.splice(k, 1);
+                        continue;
+                    }
+                }
+                let cx = 0, cy = 0, n = 0;
+                let a00 = 0, a01 = 0, a10 = 0, a11 = 0;
+                for (const i of p.idx) {
+                    if (!ALIVE[i]) continue;
+                    cx += PX[i]; cy += PY[i]; n += 1;
+                }
+                if (!n) continue;
+                cx /= n; cy /= n;
+                for (const i of p.idx) {
+                    if (!ALIVE[i]) continue;
+                    const dx = PX[i] - cx, dy = PY[i] - cy;
+                    a00 += dx * RX[i]; a01 += dx * RY[i];
+                    a10 += dy * RX[i]; a11 += dy * RY[i];
+                }
+                const ang = Math.atan2(a10 - a01, a00 + a11);
+                const ca = Math.cos(ang), sa = Math.sin(ang);
+                p.cx = cx; p.cy = cy; p.ang = ang;
+                if (stiff <= 0) continue;
+                for (const i of p.idx) {
+                    if (!ALIVE[i]) continue;
+                    const k2 = LIQ[i] ? stiff * 0.25 : stiff;
+                    const gx = cx + ca * RX[i] - sa * RY[i];
+                    const gy = cy + sa * RX[i] + ca * RY[i];
+                    PX[i] += (gx - PX[i]) * k2;
+                    PY[i] += (gy - PY[i]) * k2;
+                }
+            }
+        }
+
+        function impactDrips(now) {
+            pills.forEach((p) => {
+                if (p.meltT0) return;
+                if (p.impacted) {
+                    let v2 = 0, n2 = 0;
+                    p.idx.forEach((i) => { if (ALIVE[i]) { v2 += PY[i] - OY[i]; n2 += 1; } });
+                    v2 = n2 ? v2 / n2 : 0;
+                    if (p.lastVy > 1.1 && v2 < p.lastVy * 0.4 && (p.bumps || 0) < 3) {
+                        p.bumps = (p.bumps || 0) + 1;
+                        jelly.blop(p.lastVy / 5 / p.bumps);
+                    }
+                    p.lastVy = v2;
+                    return;
+                }
+                let vy = 0, n = 0;
+                p.idx.forEach((i) => { if (ALIVE[i]) { vy += PY[i] - OY[i]; n += 1; } });
+                if (!n) return;
+                vy /= n;
+                if (p.impacted !== true && p.lastVy !== undefined && p.lastVy > 1.1 && vy < p.lastVy * 0.4 && (p.bumps || 0) < 3) {
+                    p.bumps = (p.bumps || 0) + 1;
+                    jelly.blop(p.lastVy / 5 / p.bumps);
+                }
+                if (p.lastVy !== undefined && p.lastVy > 2.2 && vy < p.lastVy * 0.35) {
+                    p.impacted = true;
+                    const ca = Math.cos(p.ang), sa = Math.sin(p.ang);
+                    const count = 2 + Math.floor(Math.random() * 3);
+                    for (let c = 0; c < count; c += 1) {
+                        const i = alloc();
+                        if (i < 0) break;
+                        const along = (Math.random() - 0.5) * 0.8;
+                        let minRy = 0;
+                        p.idx.forEach((k) => { if (RY[k] > minRy) minRy = RY[k]; });
+                        let halfW = 0;
+                        p.idx.forEach((k) => { if (Math.abs(RX[k]) > halfW) halfW = Math.abs(RX[k]); });
+                        const lx = along * halfW * 2;
+                        const ly = minRy + R * 2.2;
+                        ALIVE[i] = 1; LIQ[i] = 1; GRP[i] = -1; RND[i] = Math.random();
+                        RAD[i] = R * (0.55 + Math.random() * 0.3);
+                        PX[i] = OX[i] = p.cx + ca * lx - sa * ly;
+                        PY[i] = OY[i] = p.cy + sa * lx + ca * ly;
+                        LIFE[i] = now + 9000 + Math.random() * 6000;
+                    }
+                }
+                p.lastVy = vy;
+            });
+        }
+
+        function evaporate(now, dt) {
+            for (let i = 0; i < high; i += 1) {
+                if (!ALIVE[i] || !LIFE[i] || now < LIFE[i]) continue;
+                RAD[i] -= R * dt / 1.8;
+                if (RAD[i] < 0.9) kill(i);
+            }
+        }
+
+        function step(dt, now) {
+            const h = dt / SUB;
+            const g = GRAV * h * h;
+            for (let s = 0; s < SUB; s += 1) {
+                for (let i = 0; i < high; i += 1) {
+                    if (!ALIVE[i]) continue;
+                    const damp = LIQ[i] ? 0.992 : 0.998;
+                    let vx = (PX[i] - OX[i]) * damp;
+                    let vy = (PY[i] - OY[i]) * damp;
+                    const sp = Math.hypot(vx, vy);
+                    const VMAX = R * 1.4;
+                    if (sp > VMAX) { vx *= VMAX / sp; vy *= VMAX / sp; }
+                    OX[i] = PX[i]; OY[i] = PY[i];
+                    PX[i] += vx;
+                    PY[i] += vy + g;
+                }
+                shapeMatch(now);
+                solveCollisions();
+                bounds();
+            }
+            impactDrips(now);
+            evaporate(now, dt);
+        }
+
+        const gl = canvas.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false });
+        let fieldTex, fieldFb, pointProg, quadProg, pointBuf, quadBuf, fieldW = 1, fieldH = 1;
+        const pointData = new Float32Array(MAXP * 3);
+        const FIELD_SCALE = 0.5;
+
+        function shader(type, src) {
+            const s = gl.createShader(type);
+            gl.shaderSource(s, src);
+            gl.compileShader(s);
+            if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.warn(gl.getShaderInfoLog(s));
+            return s;
+        }
+        function program(vs, fs) {
+            const pr = gl.createProgram();
+            gl.attachShader(pr, shader(gl.VERTEX_SHADER, vs));
+            gl.attachShader(pr, shader(gl.FRAGMENT_SHADER, fs));
+            gl.linkProgram(pr);
+            return pr;
+        }
+
+        function initGL() {
+            if (!gl) return;
+            pointProg = program(`
+                attribute vec3 a;
+                uniform vec2 uRes;
+                uniform float uScale;
+                void main() {
+                    gl_Position = vec4(a.x / uRes.x * 2.0 - 1.0, 1.0 - a.y / uRes.y * 2.0, 0.0, 1.0);
+                    gl_PointSize = a.z * 3.8 * 2.0 * uScale;
+                }`, `
+                precision mediump float;
+                void main() {
+                    vec2 c = gl_PointCoord * 2.0 - 1.0;
+                    float d2 = dot(c, c);
+                    if (d2 > 1.0) discard;
+                    float f = 1.0 - d2;
+                    gl_FragColor = vec4(f * f * 0.2, 0.0, 0.0, 1.0);
+                }`);
+            quadProg = program(`
+                attribute vec2 p;
+                varying vec2 v;
+                void main() { v = p * 0.5 + 0.5; gl_Position = vec4(p, 0.0, 1.0); }`, `
+                precision mediump float;
+                varying vec2 v;
+                uniform sampler2D uF;
+                uniform vec2 uTexel;
+                void main() {
+                    float f = texture2D(uF, v).r;
+                    float sh = texture2D(uF, v + vec2(-uTexel.x * 2.0, uTexel.y * 7.0)).r;
+                    float shadowOnly = smoothstep(0.08, 0.5, sh) * (1.0 - smoothstep(0.16, 0.22, f)) * 0.14;
+                    if (f < 0.12) { gl_FragColor = vec4(vec3(0.16, 0.24, 0.14) * shadowOnly, shadowOnly); return; }
+                    float fx = texture2D(uF, v + vec2(uTexel.x, 0.0)).r - texture2D(uF, v - vec2(uTexel.x, 0.0)).r;
+                    float fy = texture2D(uF, v + vec2(0.0, uTexel.y)).r - texture2D(uF, v - vec2(0.0, uTexel.y)).r;
+                    float mask = smoothstep(0.18, 0.24, f);
+                    float thick = smoothstep(0.22, 0.75, f);
+                    vec3 n = normalize(vec3(-fx * 9.0, -fy * 9.0, 1.0));
+                    float rim = pow(1.0 - n.z, 3.2);
+                    vec3 L = normalize(vec3(-0.5, 0.62, 0.72));
+                    vec3 Hh = normalize(L + vec3(0.0, 0.0, 1.0));
+                    float spec = pow(max(dot(n, Hh), 0.0), 56.0);
+                    vec3 L2 = normalize(vec3(0.55, -0.5, 0.68));
+                    float spec2 = pow(max(dot(n, normalize(L2 + vec3(0.0, 0.0, 1.0))), 0.0), 110.0) * 0.45;
+                    float edge = smoothstep(0.18, 0.195, f) - smoothstep(0.195, 0.23, f);
+                    vec3 tint = vec3(0.97, 0.99, 0.96);
+                    float body = mask * (0.16 + 0.1 * thick);
+                    float light = mask * (rim * 0.26 + spec * 0.7 + spec2 * 0.8);
+                    float under = max(0.0, -n.y) * 0.18 * mask;
+                    float ink = mask * edge * 0.24 + under;
+                    float shade = shadowOnly * (1.0 - mask);
+                    vec3 col = tint * body + vec3(1.0) * light + vec3(0.22, 0.34, 0.2) * ink + vec3(0.16, 0.24, 0.14) * shade;
+                    float alpha = clamp(body + light + ink + shade, 0.0, 1.0);
+                    gl_FragColor = vec4(col, alpha);
+                }`);
+            pointBuf = gl.createBuffer();
+            quadBuf = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+            fieldTex = gl.createTexture();
+            fieldFb = gl.createFramebuffer();
+        }
+
+        function resizeGL() {
+            if (!gl) return;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            fieldW = Math.max(1, Math.round(W * FIELD_SCALE));
+            fieldH = Math.max(1, Math.round(H * FIELD_SCALE));
+            gl.bindTexture(gl.TEXTURE_2D, fieldTex);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, fieldW, fieldH, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fieldFb);
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fieldTex, 0);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        }
+
+        function render() {
+            if (!gl) return;
+            let n = 0;
+            for (let i = 0; i < high; i += 1) {
+                if (!ALIVE[i]) continue;
+                pointData[n * 3] = PX[i];
+                pointData[n * 3 + 1] = PY[i];
+                pointData[n * 3 + 2] = RAD[i];
+                n += 1;
+            }
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fieldFb);
+            gl.viewport(0, 0, fieldW, fieldH);
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            if (n) {
+                gl.useProgram(pointProg);
+                gl.enable(gl.BLEND);
+                gl.blendFunc(gl.ONE, gl.ONE);
+                gl.bindBuffer(gl.ARRAY_BUFFER, pointBuf);
+                gl.bufferData(gl.ARRAY_BUFFER, pointData.subarray(0, n * 3), gl.DYNAMIC_DRAW);
+                const la = gl.getAttribLocation(pointProg, 'a');
+                gl.enableVertexAttribArray(la);
+                gl.vertexAttribPointer(la, 3, gl.FLOAT, false, 0, 0);
+                gl.uniform2f(gl.getUniformLocation(pointProg, 'uRes'), W, H);
+                gl.uniform1f(gl.getUniformLocation(pointProg, 'uScale'), FIELD_SCALE);
+                gl.drawArrays(gl.POINTS, 0, n);
+                gl.disableVertexAttribArray(la);
+            }
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            if (!n) return;
+            gl.useProgram(quadProg);
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, fieldTex);
+            gl.uniform1i(gl.getUniformLocation(quadProg, 'uF'), 0);
+            gl.uniform2f(gl.getUniformLocation(quadProg, 'uTexel'), 1 / fieldW, 1 / fieldH);
+            gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+            const lp = gl.getAttribLocation(quadProg, 'p');
+            gl.enableVertexAttribArray(lp);
+            gl.vertexAttribPointer(lp, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            gl.disableVertexAttribArray(lp);
+        }
+
+        function placeLabels() {
+            pills.forEach((p) => {
+                let wobble = 1;
+                if (p.meltT0) {
+                    const t = Math.min(1, (performance.now() - p.meltT0) / 1400);
+                    wobble = 1 - t * 0.5;
+                }
+                p.label.style.transform = `translate(${p.cx - p.tw / 2}px, ${p.cy - p.th / 2}px) rotate(${p.ang}rad) scale(1, ${wobble})`;
+            });
+        }
+
+        let running = false;
+        let last = 0;
+        function frame(now) {
+            if (!running) return;
+            const dt = Math.min(1 / 30, (now - last) / 1000 || 1 / 60);
+            last = now;
+            step(dt, now);
+            placeLabels();
+            render();
+            requestAnimationFrame(frame);
+        }
+        function startLoop() {
+            if (running) return;
+            running = true;
+            last = performance.now();
+            requestAnimationFrame(frame);
+        }
+
+        let liquidRunning = false;
+        let liquidLast = 0;
+        function liquidFrame(now) {
+            if (!liquidRunning) return;
+            const dt = Math.min(1 / 30, (now - liquidLast) / 1000 || 1 / 60);
+            liquidLast = now;
+            step(dt, now);
+            placeLabels();
+            render();
+            requestAnimationFrame(liquidFrame);
+        }
+        function startLiquid() {
+            if (liquidRunning) return;
+            measure();
+            liquidRunning = true;
+            liquidLast = performance.now();
+            requestAnimationFrame(liquidFrame);
+        }
+        function meltAll() {
+            const solid = pills.filter((p) => !p.meltT0 && !p.meltQueued);
+            solid.sort((a, b) => a.cy - b.cy);
+            solid.forEach((p, i) => melt(p, reduce ? 0 : i * 140));
+            const now = performance.now();
+            for (let i = 0; i < high; i += 1) {
+                if (ALIVE[i] && GRP[i] === -1) LIFE[i] = Math.min(LIFE[i] || Infinity, now + 600 + RND[i] * 1800);
+            }
+        }
+        function resetLiquid() {
+            liquidRunning = false;
+            pills.splice(0).forEach((p) => p.label.remove());
+            for (let i = 0; i < high; i += 1) if (ALIVE[i]) kill(i);
+            free.length = 0;
+            high = 0;
+            if (gl) render();
+        }
+        initGL();
+        window.addEventListener('resize', () => { if (liquidRunning) measure(); });
+        meltBtn.addEventListener('click', meltAll);
 
         function placeInSpace(el) {
             const choices = thoughtSlots
@@ -629,27 +1183,22 @@ body { background:linear-gradient(145deg,#f7faf5 10%,#e2efdf 50%,#f2f7ed 74%,#e0
             input?.focus?.({ preventScroll: true });
         }
 
-        function syncPreview() {
-            input.style.fontSize = currentSize + 'px';
-            input.style.color = '#315446';
-        }
-
-        syncPreview();
-
         modeButtons.forEach(button => {
             button.addEventListener('click', () => {
                 modeButtons.forEach(b => b.classList.remove('active'));
                 button.classList.add('active');
                 currentMode = button.dataset.mode;
+                meltBtn.hidden = currentMode !== 'melt';
+                btn.hidden = currentMode === 'melt';
             });
         });
+        document.querySelector('.mode-btn[data-mode="melt"]')?.click();
 
         toneDots.forEach((dot) => {
             dot.addEventListener('click', () => {
                 toneDots.forEach((item) => item.classList.remove('is-on'));
                 dot.classList.add('is-on');
                 currentColor = dot.dataset.color;
-                syncPreview();
             });
         });
 
@@ -658,46 +1207,112 @@ body { background:linear-gradient(145deg,#f7faf5 10%,#e2efdf 50%,#f2f7ed 74%,#e0
                 weightDots.forEach((item) => item.classList.remove('is-on'));
                 dot.classList.add('is-on');
                 currentSize = Number(dot.dataset.size);
-                syncPreview();
             });
         });
 
+        // 글자의 픽셀만 샘플링해 잡음으로 흩뜨린다. 방을 나가면 렌더링도 중단한다.
+        function eraseWithNoise(text, size, color) {
+            const source = document.createElement('canvas');
+            const ink = source.getContext('2d');
+            const font = `${size}px ${getComputedStyle(input).fontFamily}`;
+            ink.font = font;
+            const width = Math.min(1200, Math.ceil(ink.measureText(text).width) + 8);
+            const height = Math.ceil(size * 1.6);
+            source.width = width;
+            source.height = height;
+            ink.font = font;
+            ink.textBaseline = 'middle';
+            ink.fillStyle = color;
+            ink.fillText(text, 4, height / 2, width - 8);
+            const pixels = ink.getImageData(0, 0, width, height).data;
+            const grains = [];
+            for (let y = 0; y < height; y += 2) {
+                for (let x = 0; x < width; x += 2) {
+                    if (pixels[(y * width + x) * 4 + 3] > 70) {
+                        grains.push({ x, y, delay: Math.random() * .4, vx: (Math.random() - .5) * 26, vy: (Math.random() - .5) * 12 });
+                    }
+                }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.className = 'anim-noise';
+            canvas.setAttribute('aria-label', text);
+            canvas.width = width + 160;
+            canvas.height = height + 100;
+            const scale = Math.min(1, (innerWidth * .88) / canvas.width);
+            canvas.style.width = `${canvas.width * scale}px`;
+            canvas.style.height = `${canvas.height * scale}px`;
+            placeInSpace(canvas);
+            const left = parseFloat(canvas.style.left) / 100 * innerWidth;
+            const half = canvas.width * scale / 2;
+            canvas.style.left = `${Math.max(half, Math.min(innerWidth - half, left))}px`;
+            stage.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            const start = performance.now();
+            function frame(now) {
+                if (!canvas.isConnected) return;
+                const t = (now - start) / (reduce ? 1200 : 4600);
+                if (t >= 1) { canvas.remove(); return; }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (reduce || t < .18) {
+                    ctx.globalAlpha = reduce ? 1 - t : 1;
+                    ctx.drawImage(source, 80, 50);
+                } else {
+                    const progress = (t - .18) / .82;
+                    ctx.globalAlpha = Math.pow(1 - progress, 1.15);
+                    ctx.filter = `blur(${progress * 4}px)`;
+                    const waveStrength = Math.sin(progress * Math.PI) * 4.5;
+                    const waveOffset = y => Math.sin(y * .13 - t * 18) * waveStrength;
+                    // 얇은 가로 띠를 같은 파형으로 움직여 글자와 잡음이 함께 일렁인다.
+                    for (let y = 0; y < height; y += 2) {
+                        const stripHeight = Math.min(2, height - y);
+                        ctx.drawImage(source, 0, y, width, stripHeight,
+                            80 + waveOffset(y), 50 + y, width, stripHeight);
+                    }
+                    ctx.filter = 'none';
+                    for (const grain of grains) {
+                        const dissolve = Math.max(0, (progress - grain.delay) / (1 - grain.delay));
+                        if (Math.random() < .22 + dissolve * .4) continue;
+                        ctx.globalAlpha = Math.sin(progress * Math.PI) * (1 - dissolve) * .52;
+                        ctx.fillStyle = Math.random() < .15 ? '#faffee' : color;
+                        const jitter = 1 + dissolve * 4;
+                        const band = waveOffset(grain.y) + Math.sin(Math.floor(grain.y / 4) * 7 + Math.floor(t * 28)) * Math.sin(progress * Math.PI) * 2;
+                        ctx.fillRect(80 + grain.x + grain.vx * dissolve + band + (Math.random() - .5) * jitter,
+                            50 + grain.y + grain.vy * dissolve + (Math.random() - .5) * jitter,
+                            2, 1.5);
+                    }
+                }
+                requestAnimationFrame(frame);
+            }
+            requestAnimationFrame(frame);
+        }
+
         function clearThought() {
-            if (isComposing) return;
             const text = input.value.trim();
             if (!text) return;
-
-            const now = performance.now();
-            if (now - lastSubmitAt < 180) return;
-            lastSubmitAt = now;
 
             const size = currentSize + 'px';
             const color = currentColor;
 
-            // 1. 흘려보내기
+            if (currentMode === 'melt') {
+                startLiquid();
+                dropPill(text);
+                input.value = '';
+                return;
+            }
+
             if (currentMode === 'flow') {
                 const el = document.createElement('div');
                 el.className = 'anim-fade-flow';
                 el.innerText = text;
-                el.dataset.echo = text;
                 el.style.fontSize = size;
                 el.style.color = color;
                 placeInSpace(el);
                 stage.appendChild(el);
                 setTimeout(() => el.remove(), 6400);
             } 
-            // 2. 노이징 지우기
             else if (currentMode === 'noise') {
-                const el = document.createElement('div');
-                el.className = 'anim-noise';
-                el.innerText = text;
-                el.style.fontSize = size;
-                el.style.color = color;
-                placeInSpace(el);
-                stage.appendChild(el);
-                setTimeout(() => el.remove(), 6000);
+                eraseWithNoise(text, currentSize, color);
             } 
-            // 3. 깨뜨리기
             else if (currentMode === 'break') {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'thought-break';
@@ -729,11 +1344,8 @@ body { background:linear-gradient(145deg,#f7faf5 10%,#e2efdf 50%,#f2f7ed 74%,#e0
         }
 
         btn.addEventListener('click', clearThought);
-        input.addEventListener('compositionstart', () => { isComposing = true; });
-        input.addEventListener('compositionend', () => { isComposing = false; });
         input.addEventListener('keydown', (e) => {
-            if (e.key !== 'Enter') return;
-            if (e.isComposing || isComposing || e.keyCode === 229) return;
+            if (e.key !== 'Enter' || e.isComposing || e.keyCode === 229) return;
             e.preventDefault();
             clearThought();
         });
@@ -743,17 +1355,7 @@ body { background:linear-gradient(145deg,#f7faf5 10%,#e2efdf 50%,#f2f7ed 74%,#e0
             document.body.classList.remove('is-on', 'is-playing');
             guideCopy?.classList.remove('is-gone');
             stage.innerHTML = '';
-            input.value = '';
-            isComposing = false;
-            lastSubmitAt = 0;
-            lastSlot = -1;
-            currentMode = 'flow';
-            currentColor = '#a8d98c';
-            currentSize = 42;
-            modeButtons.forEach((item) => item.classList.toggle('active', item.dataset.mode === 'flow'));
-            toneDots.forEach((item) => item.classList.toggle('is-on', item.dataset.color === '#a8d98c'));
-            weightDots.forEach((item) => item.classList.toggle('is-on', Number(item.dataset.size) === 42));
-            syncPreview();
+            resetLiquid();
         };
 
         window.startThink = function () {
